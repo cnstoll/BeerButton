@@ -16,6 +16,7 @@ class InterfaceController: WKInterfaceController, WCSessionDelegate {
     @IBOutlet weak var picker : WKInterfacePicker?
     @IBOutlet weak var button : WKInterfaceButton?
     @IBOutlet weak var label : WKInterfaceLabel?
+    @IBOutlet weak var timer : WKInterfaceTimer?
     
     var beers : [Beer] = []
     
@@ -65,6 +66,20 @@ class InterfaceController: WKInterfaceController, WCSessionDelegate {
         self.group?.setBackgroundImage(beer.image)
         //self.button?.setBackgroundImage(beer.image)
         self.button?.setTitle(beer.title)
+    }
+    
+    @IBAction func didOrderBeer(sender : WKInterfaceButton) {
+        self.animateWithDuration(0.5, animations: {
+            self.group?.setHeight(40)
+            self.button?.setTitle("")
+            self.group?.setWidth(40)
+            self.group?.setCornerRadius(20)
+            self.button?.setAlpha(0)
+            self.timer?.setAlpha(1)
+        })
+        
+        self.timer?.setDate(NSDate(timeIntervalSinceNow: 61))
+        self.timer?.start()
     }
     
     // WatchConnectivity Methods
