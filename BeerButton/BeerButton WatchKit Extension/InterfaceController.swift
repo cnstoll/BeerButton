@@ -12,6 +12,7 @@ import WatchConnectivity
 
 class InterfaceController: WKInterfaceController, WCSessionDelegate {
     
+    @IBOutlet weak var group : WKInterfaceGroup?
     @IBOutlet weak var picker : WKInterfacePicker?
     @IBOutlet weak var button : WKInterfaceButton?
     @IBOutlet weak var label : WKInterfaceLabel?
@@ -51,13 +52,19 @@ class InterfaceController: WKInterfaceController, WCSessionDelegate {
         }
         
         self.picker?.setItems(items)
+
+        if (items.count > 0) {
+            pickerDidChange(0)
+        }
     }
     
     @IBAction func pickerDidChange(index : Int) {
         let beer = beers[index]
     
         self.label?.setText(beer.title)
-        self.button?.setBackgroundImage(beer.image)
+        self.group?.setBackgroundImage(beer.image)
+        //self.button?.setBackgroundImage(beer.image)
+        self.button?.setTitle(beer.title)
     }
     
     // WatchConnectivity Methods

@@ -10,22 +10,30 @@
             <objects>
                 <controller id="AgC-eL-Hgc" customClass="InterfaceController" customModule="BeerButton_WatchKit_App" customModuleProvider="target">
                     <items>
-                        <picker height="100" alignment="left" style="sequence" id="kO9-sj-QJJ">
+                        <picker width="136" height="7" alignment="left" style="sequence" id="kO9-sj-QJJ">
                             <connections>
                                 <action selector="pickerDidChange:" destination="AgC-eL-Hgc" id="ra9-TE-k6p"/>
                             </connections>
                         </picker>
                         <label alignment="center" text="Label" id="rjp-6r-Hsr"/>
-                        <button width="1" alignment="left" title="Button" id="gtZ-Fd-P3T"/>
+                        <group width="100" height="100" alignment="center" radius="50" id="ILQ-OM-Spz">
+                            <items>
+                                <button alignment="center" title="Order" backgroundImage="button" id="gtZ-Fd-P3T">
+                                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                </button>
+                            </items>
+                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                        </group>
                     </items>
                     <connections>
                         <outlet property="button" destination="gtZ-Fd-P3T" id="2HN-Na-dBi"/>
+                        <outlet property="group" destination="ILQ-OM-Spz" id="YPc-xk-RjH"/>
                         <outlet property="label" destination="rjp-6r-Hsr" id="3uU-K8-Dgc"/>
                         <outlet property="picker" destination="kO9-sj-QJJ" id="9ef-Ed-anM"/>
                     </connections>
                 </controller>
             </objects>
-            <point key="canvasLocation" x="164" y="217"/>
+            <point key="canvasLocation" x="164" y="210"/>
         </scene>
         <!--Glance Interface Controller-->
         <scene sceneID="rjY-Ar-IMT">
