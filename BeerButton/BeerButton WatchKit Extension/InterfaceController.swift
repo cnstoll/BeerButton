@@ -8,10 +8,16 @@
 
 import WatchKit
 import Foundation
+import WatchConnectivity
 
-
-class InterfaceController: WKInterfaceController {
-
+class InterfaceController: WKInterfaceController, WCSessionDelegate {
+    
+    @IBOutlet weak var picker : WKInterfacePicker?
+    @IBOutlet weak var button : WKInterfaceButton?
+    @IBOutlet weak var label : WKInterfaceLabel?
+    
+    var beers : [Beer] = []
+    
     override func awakeWithContext(context: AnyObject?) {
         super.awakeWithContext(context)
         
@@ -19,13 +25,27 @@ class InterfaceController: WKInterfaceController {
     }
 
     override func willActivate() {
-        // This method is called when watch view controller is about to be visible to user
         super.willActivate()
+        
+        let session = WCSession.defaultSession()
+        session.delegate = self
+        session.activateSession()
     }
 
     override func didDeactivate() {
-        // This method is called when watch view controller is no longer visible
         super.didDeactivate()
     }
-
+    
+    // WatchConnectivity Methods
+    
+    func session(session: WCSession, didReceiveApplicationContext applicationContext: [String : AnyObject]) {
+        if let array = applicationContext["beers"] as? [[String : AnyObject]] {
+            beers.removeAll()
+            
+            for item in array {
+                let beer = Beer(dictionary: item)
+                beers.append(beer)
+            }
+        }
+    }
 }

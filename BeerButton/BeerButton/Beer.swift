@@ -17,9 +17,19 @@ struct Beer {
         self.title = title
         self.image = image
     }
+    
+    init(dictionary: [String : AnyObject]) {
+        if let title = dictionary["title"] as? String {
+            self.title = title
+        }
+        
+        if let image = dictionary["image"] as? NSData {
+            self.image = UIImage(data: image)
+        }
+    }
+    
+    func toDictionary() -> [String : AnyObject] {
+        return ["title" : title, "image" : UIImagePNGRepresentation(image!)!]
+    }
 }
 
-class BeerCell : UITableViewCell {
-    @IBOutlet weak var beerLabel : UILabel?
-    @IBOutlet weak var beerImage : UIImageView?
-}

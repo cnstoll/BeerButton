@@ -7,8 +7,9 @@
 //
 
 import UIKit
+import WatchConnectivity
 
-class ViewController: UITableViewController, UINavigationControllerDelegate, UIImagePickerControllerDelegate {
+class ViewController: UITableViewController, UINavigationControllerDelegate, UIImagePickerControllerDelegate, WCSessionDelegate {
 
     var textField : UITextField?
     var pickedImage : UIImage?
@@ -24,8 +25,32 @@ class ViewController: UITableViewController, UINavigationControllerDelegate, UII
     
     func finishAddingBeer() {
         if let title = pickedTitle, image = pickedImage {
-            let beer = Beer(title: title, image: image)
+            let thumbnail = image.squareImageTo(CGSize(width: 100, height: 100))
+            
+            let beer = Beer(title: title, image: thumbnail)
             beers.append(beer)
+            
+            let session = WCSession.defaultSession()
+            session.delegate = self
+            
+            // Remember to activate session
+            session.activateSession()
+            
+            var context = session.applicationContext
+            
+            var array : [[String : AnyObject]] = []
+            
+            for item in beers {
+                array.append(item.toDictionary())
+            }
+            
+            context["beers"] = array
+            
+            do {
+                try session.updateApplicationContext(context)
+            } catch let error {
+                print(error)
+            }
         }
         
         tableView.reloadData()

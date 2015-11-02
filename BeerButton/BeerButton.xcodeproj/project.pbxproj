@@ -22,6 +22,9 @@
 		55FEF8F81BE6ACBB00403186 /* ComplicationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55FEF8F71BE6ACBB00403186 /* ComplicationController.swift */; };
 		55FEF8FA1BE6ACBB00403186 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 55FEF8F91BE6ACBB00403186 /* Assets.xcassets */; };
 		55FEF90A1BE6AEEB00403186 /* Beer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55FEF9091BE6AEEB00403186 /* Beer.swift */; };
+		55FEF90E1BE70C4600403186 /* Beer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55FEF9091BE6AEEB00403186 /* Beer.swift */; };
+		55FEF9101BE70C5E00403186 /* BeerCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55FEF90F1BE70C5E00403186 /* BeerCell.swift */; };
+		55FEF9121BE717DC00403186 /* ResizeImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55FEF9111BE717DC00403186 /* ResizeImage.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -86,6 +89,8 @@
 		55FEF8F91BE6ACBB00403186 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		55FEF8FB1BE6ACBB00403186 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		55FEF9091BE6AEEB00403186 /* Beer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Beer.swift; sourceTree = "<group>"; };
+		55FEF90F1BE70C5E00403186 /* BeerCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BeerCell.swift; sourceTree = "<group>"; };
+		55FEF9111BE717DC00403186 /* ResizeImage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ResizeImage.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -131,6 +136,8 @@
 			children = (
 				55FEF8CE1BE6ACBA00403186 /* AppDelegate.swift */,
 				55FEF9091BE6AEEB00403186 /* Beer.swift */,
+				55FEF90F1BE70C5E00403186 /* BeerCell.swift */,
+				55FEF9111BE717DC00403186 /* ResizeImage.swift */,
 				55FEF8D01BE6ACBA00403186 /* ViewController.swift */,
 				55FEF8D21BE6ACBA00403186 /* Main.storyboard */,
 				55FEF8D51BE6ACBA00403186 /* Assets.xcassets */,
@@ -298,6 +305,8 @@
 				55FEF8D11BE6ACBA00403186 /* ViewController.swift in Sources */,
 				55FEF90A1BE6AEEB00403186 /* Beer.swift in Sources */,
 				55FEF8CF1BE6ACBA00403186 /* AppDelegate.swift in Sources */,
+				55FEF9101BE70C5E00403186 /* BeerCell.swift in Sources */,
+				55FEF9121BE717DC00403186 /* ResizeImage.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -307,6 +316,7 @@
 			files = (
 				55FEF8F41BE6ACBB00403186 /* ExtensionDelegate.swift in Sources */,
 				55FEF8F81BE6ACBB00403186 /* ComplicationController.swift in Sources */,
+				55FEF90E1BE70C4600403186 /* Beer.swift in Sources */,
 				55FEF8F21BE6ACBB00403186 /* InterfaceController.swift in Sources */,
 				55FEF8F61BE6ACBB00403186 /* GlanceController.swift in Sources */,
 			);
