@@ -21,19 +21,43 @@ class InterfaceController: WKInterfaceController, WCSessionDelegate {
     override func awakeWithContext(context: AnyObject?) {
         super.awakeWithContext(context)
         
-        // Configure interface objects here.
-    }
-
-    override func willActivate() {
-        super.willActivate()
-        
         let session = WCSession.defaultSession()
         session.delegate = self
         session.activateSession()
     }
 
+    override func willActivate() {
+        super.willActivate()
+
+        
+    }
+
     override func didDeactivate() {
         super.didDeactivate()
+    }
+    
+    func updatePickerItems() {
+        var items : [WKPickerItem] = []
+        
+        for beer in beers {
+            let item = WKPickerItem()
+            item.title = beer.title
+            
+            if let image = beer.image {
+                item.contentImage = WKImage(image: image)
+            }
+            
+            items.append(item)
+        }
+        
+        self.picker?.setItems(items)
+    }
+    
+    @IBAction func pickerDidChange(index : Int) {
+        let beer = beers[index]
+    
+        self.label?.setText(beer.title)
+        self.button?.setBackgroundImage(beer.image)
     }
     
     // WatchConnectivity Methods
@@ -46,6 +70,8 @@ class InterfaceController: WKInterfaceController, WCSessionDelegate {
                 let beer = Beer(dictionary: item)
                 beers.append(beer)
             }
+            
+            self.updatePickerItems()
         }
     }
 }

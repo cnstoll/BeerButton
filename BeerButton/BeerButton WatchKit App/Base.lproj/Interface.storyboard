@@ -10,7 +10,11 @@
             <objects>
                 <controller id="AgC-eL-Hgc" customClass="InterfaceController" customModule="BeerButton_WatchKit_App" customModuleProvider="target">
                     <items>
-                        <picker height="100" alignment="left" id="kO9-sj-QJJ"/>
+                        <picker height="100" alignment="left" style="sequence" id="kO9-sj-QJJ">
+                            <connections>
+                                <action selector="pickerDidChange:" destination="AgC-eL-Hgc" id="ra9-TE-k6p"/>
+                            </connections>
+                        </picker>
                         <label alignment="center" text="Label" id="rjp-6r-Hsr"/>
                         <button width="1" alignment="left" title="Button" id="gtZ-Fd-P3T"/>
                     </items>
