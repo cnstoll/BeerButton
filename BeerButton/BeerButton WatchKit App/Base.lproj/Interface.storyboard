@@ -15,11 +15,11 @@
                                 <action selector="pickerDidChange:" destination="AgC-eL-Hgc" id="ra9-TE-k6p"/>
                             </connections>
                         </picker>
-                        <group width="100" height="100" alignment="center" verticalAlignment="center" radius="50" id="ILQ-OM-Spz">
+                        <group width="100" height="100" alignment="center" verticalAlignment="center" layout="vertical" radius="50" id="ILQ-OM-Spz">
                             <items>
                                 <group width="100" height="100" alignment="center" verticalAlignment="center" radius="50" id="St9-xz-pwt">
                                     <items>
-                                        <button width="1" height="1" alignment="left" verticalAlignment="center" title="Order" backgroundImage="button" id="gtZ-Fd-P3T">
+                                        <button width="1" height="1" alignment="left" verticalAlignment="center" title="Beer" backgroundImage="button" id="gtZ-Fd-P3T">
                                             <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                                             <connections>
                                                 <action selector="didOrderBeer:" destination="AgC-eL-Hgc" id="tHx-Wx-Qsb"/>
@@ -28,16 +28,16 @@
                                     </items>
                                     <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                                 </group>
-                                <label alignment="center" verticalAlignment="center" text="Label" id="rjp-6r-Hsr"/>
+                                <timer alignment="center" verticalAlignment="center" alpha="0.0" id="tBf-22-BZX">
+                                    <calendarUnit key="units" minute="YES" second="YES"/>
+                                </timer>
                             </items>
                             <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                         </group>
-                        <timer alignment="center" verticalAlignment="center" alpha="0.0" id="tBf-22-BZX"/>
                     </items>
                     <connections>
                         <outlet property="button" destination="gtZ-Fd-P3T" id="2HN-Na-dBi"/>
                         <outlet property="group" destination="St9-xz-pwt" id="g0h-xz-asM"/>
-                        <outlet property="label" destination="rjp-6r-Hsr" id="3uU-K8-Dgc"/>
                         <outlet property="picker" destination="kO9-sj-QJJ" id="9ef-Ed-anM"/>
                         <outlet property="timer" destination="tBf-22-BZX" id="v19-gb-j4H"/>
                     </connections>
@@ -50,10 +50,32 @@
             <objects>
                 <glanceController spacing="0.0" id="Sv0-Ai-Zie" customClass="GlanceController" customModule="BeerButton_WatchKit_App" customModuleProvider="target">
                     <items>
-                        <group alignment="left" id="gv7-I2-MZq"/>
-                        <group alignment="left" id="eew-Gs-W6Y"/>
+                        <group alignment="left" id="gv7-I2-MZq">
+                            <items>
+                                <label width="99" alignment="right" verticalAlignment="bottom" text="Label" textAlignment="center" id="7db-S0-xAK">
+                                    <variation key="device=watch42mm" width="122"/>
+                                </label>
+                            </items>
+                        </group>
+                        <group alignment="left" layout="vertical" id="eew-Gs-W6Y">
+                            <items>
+                                <group width="60" height="60" alignment="center" radius="30" id="aXL-DQ-NVE">
+                                    <items>
+                                        <imageView width="60" height="60" alignment="center" id="jCb-K9-8xE"/>
+                                    </items>
+                                </group>
+                                <timer alignment="center" id="7CZ-to-8bU">
+                                    <calendarUnit key="units" minute="YES" second="YES"/>
+                                </timer>
+                            </items>
+                        </group>
                     </items>
                     <edgeInsets key="margins" left="0.0" right="0.0" top="0.0" bottom="14"/>
+                    <connections>
+                        <outlet property="image" destination="jCb-K9-8xE" id="QRK-K7-0Vc"/>
+                        <outlet property="label" destination="7db-S0-xAK" id="GBY-Xh-MtS"/>
+                        <outlet property="timer" destination="7CZ-to-8bU" id="C6m-6o-Z9k"/>
+                    </connections>
                 </glanceController>
             </objects>
             <point key="canvasLocation" x="164" y="514"/>

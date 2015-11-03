@@ -16,6 +16,21 @@ class ViewController: UITableViewController, UINavigationControllerDelegate, UII
     var pickedTitle : String?
     
     var beers : [Beer] = []
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        
+        let defaults = NSUserDefaults.standardUserDefaults()
+        
+        if let array = defaults.objectForKey("beers") as? [[String : AnyObject]] {
+            for item in array {
+                let beer = Beer(dictionary: item)
+                beers.append(beer)
+            }
+        }
+        
+        updateWatchBeers()
+    }
 
     @IBAction func addBeer(sender : AnyObject) {
         let imagePicker = UIImagePickerController()
@@ -29,31 +44,41 @@ class ViewController: UITableViewController, UINavigationControllerDelegate, UII
             
             let beer = Beer(title: title, image: thumbnail)
             beers.append(beer)
-            
-            let session = WCSession.defaultSession()
-            session.delegate = self
-            
-            // Remember to activate session
-            session.activateSession()
-            
-            var context = session.applicationContext
-            
-            var array : [[String : AnyObject]] = []
-            
-            for item in beers {
-                array.append(item.toDictionary())
-            }
-            
-            context["beers"] = array
-            
-            do {
-                try session.updateApplicationContext(context)
-            } catch let error {
-                print(error)
-            }
         }
         
+        updateWatchBeers()
         tableView.reloadData()
+    }
+    
+    func updateWatchBeers() {
+        // Start Session
+        let session = WCSession.defaultSession()
+        session.delegate = self
+        
+        // Remember to activate session
+        session.activateSession()
+        
+        // Update Context
+        var context = session.applicationContext
+        
+        var array : [[String : AnyObject]] = []
+        
+        for item in beers {
+            array.append(item.toDictionary())
+        }
+        
+        context["beers"] = array
+        
+        // Send Message
+        do {
+            try session.updateApplicationContext(context)
+        } catch let error {
+            print(error)
+        }
+        
+        // Update Saved Cache
+        let defaults = NSUserDefaults.standardUserDefaults()
+        defaults.setObject(array, forKey: "beers")
     }
     
     // Image Methods

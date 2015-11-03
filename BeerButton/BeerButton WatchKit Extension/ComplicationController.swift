@@ -11,10 +11,63 @@ import ClockKit
 
 class ComplicationController: NSObject, CLKComplicationDataSource {
     
-    // MARK: - Timeline Configuration
+    func getCurrentTimelineEntryForComplication(complication: CLKComplication, withHandler handler: ((CLKComplicationTimelineEntry?) -> Void)) {
+        let defaults = NSUserDefaults.standardUserDefaults()
+
+        var title : String?
+        var date : NSDate?
+        var image : UIImage?
+        
+        if let order = defaults.objectForKey("order") as? [String : AnyObject] {
+            title = order["title"] as? String
+            date = order["date"] as? NSDate
+        }
+        
+        if let imageData = defaults.objectForKey("imageData") as? NSData {
+            image = UIImage(data: imageData)
+        }
+        
+        print(title, date)
+        
+        if let orderTitle = title, orderDate = date, orderImage = image {
+            let entry = CLKComplicationTimelineEntry()
+            let template = CLKComplicationTemplateModularLargeStandardBody()
+            
+            let headerTextProvider = CLKSimpleTextProvider(text: "Order Status")
+            template.headerTextProvider = headerTextProvider
+            
+            let titleTextProvider = CLKSimpleTextProvider(text: orderTitle)
+            template.body1TextProvider = titleTextProvider
+            
+            let timeTextProvider = CLKRelativeDateTextProvider(date: orderDate, style: .Timer, units: .Second)
+            template.body2TextProvider = timeTextProvider
+            
+            let imageProvider = CLKImageProvider(onePieceImage: orderImage)
+            template.headerImageProvider = imageProvider
+            template.headerImageProvider = nil
+            
+            entry.complicationTemplate = template
+            entry.date = NSDate()
+            
+            handler(entry)
+        } else {
+            handler(nil)
+        }
+    }
     
+    func getNextRequestedUpdateDateWithHandler(handler: (NSDate?) -> Void) {
+        handler(nil);
+    }
+    
+    
+    // MARK: - Default Method Implementations
+
     func getSupportedTimeTravelDirectionsForComplication(complication: CLKComplication, withHandler handler: (CLKComplicationTimeTravelDirections) -> Void) {
-        handler([.Forward, .Backward])
+        handler([.None])
+    }
+    
+    func getPrivacyBehaviorForComplication(complication: CLKComplication, withHandler handler: (CLKComplicationPrivacyBehavior) -> Void) {
+        handler(.ShowOnLockScreen)
     }
     
     func getTimelineStartDateForComplication(complication: CLKComplication, withHandler handler: (NSDate?) -> Void) {
@@ -25,38 +78,15 @@ class ComplicationController: NSObject, CLKComplicationDataSource {
         handler(nil)
     }
     
-    func getPrivacyBehaviorForComplication(complication: CLKComplication, withHandler handler: (CLKComplicationPrivacyBehavior) -> Void) {
-        handler(.ShowOnLockScreen)
-    }
-    
-    // MARK: - Timeline Population
-    
-    func getCurrentTimelineEntryForComplication(complication: CLKComplication, withHandler handler: ((CLKComplicationTimelineEntry?) -> Void)) {
-        // Call the handler with the current timeline entry
-        handler(nil)
-    }
-    
     func getTimelineEntriesForComplication(complication: CLKComplication, beforeDate date: NSDate, limit: Int, withHandler handler: (([CLKComplicationTimelineEntry]?) -> Void)) {
-        // Call the handler with the timeline entries prior to the given date
         handler(nil)
     }
     
     func getTimelineEntriesForComplication(complication: CLKComplication, afterDate date: NSDate, limit: Int, withHandler handler: (([CLKComplicationTimelineEntry]?) -> Void)) {
-        // Call the handler with the timeline entries after to the given date
         handler(nil)
     }
     
-    // MARK: - Update Scheduling
-    
-    func getNextRequestedUpdateDateWithHandler(handler: (NSDate?) -> Void) {
-        // Call the handler with the date when you would next like to be given the opportunity to update your complication content
-        handler(nil);
-    }
-    
-    // MARK: - Placeholder Templates
-    
     func getPlaceholderTemplateForComplication(complication: CLKComplication, withHandler handler: (CLKComplicationTemplate?) -> Void) {
-        // This method will be called once per supported complication, and the results will be cached
         handler(nil)
     }
     

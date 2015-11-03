@@ -34,7 +34,7 @@ extension UIImage {
         let cropSquare = CGRectMake(posX, posY, edge, edge)
         
         let imageRef = CGImageCreateWithImageInRect(image.CGImage, cropSquare);
-        return UIImage(CGImage: imageRef!, scale: UIScreen.mainScreen().scale, orientation: image.imageOrientation)
+        return UIImage(CGImage: imageRef!, scale: 2.0, orientation: image.imageOrientation)
     }
     
     private func RBResizeImage(image: UIImage, targetSize: CGSize) -> UIImage {

@@ -9,16 +9,17 @@
 import WatchKit
 import Foundation
 import WatchConnectivity
+import ClockKit
 
 class InterfaceController: WKInterfaceController, WCSessionDelegate {
     
     @IBOutlet weak var group : WKInterfaceGroup?
     @IBOutlet weak var picker : WKInterfacePicker?
     @IBOutlet weak var button : WKInterfaceButton?
-    @IBOutlet weak var label : WKInterfaceLabel?
     @IBOutlet weak var timer : WKInterfaceTimer?
     
     var beers : [Beer] = []
+    var currentBeer : Beer?
     
     override func awakeWithContext(context: AnyObject?) {
         super.awakeWithContext(context)
@@ -30,8 +31,10 @@ class InterfaceController: WKInterfaceController, WCSessionDelegate {
 
     override func willActivate() {
         super.willActivate()
-
         
+        resetOrder()
+        
+        self.updatePickerItems()
     }
 
     override func didDeactivate() {
@@ -59,12 +62,23 @@ class InterfaceController: WKInterfaceController, WCSessionDelegate {
         }
     }
     
+    func resetOrder() {
+        let defaults = NSUserDefaults.standardUserDefaults()
+        defaults.setObject(nil, forKey: "order")
+        
+        self.group?.setHeight(100)
+        self.button?.setTitle("Beer")
+        self.group?.setWidth(100)
+        self.group?.setCornerRadius(50)
+        self.button?.setAlpha(1)
+        self.timer?.setAlpha(0)
+    }
+    
     @IBAction func pickerDidChange(index : Int) {
         let beer = beers[index]
+        currentBeer = beer
     
-        self.label?.setText(beer.title)
         self.group?.setBackgroundImage(beer.image)
-        //self.button?.setBackgroundImage(beer.image)
         self.button?.setTitle(beer.title)
     }
     
@@ -78,8 +92,22 @@ class InterfaceController: WKInterfaceController, WCSessionDelegate {
             self.timer?.setAlpha(1)
         })
         
-        self.timer?.setDate(NSDate(timeIntervalSinceNow: 61))
+        let date = NSDate(timeIntervalSinceNow: 122)
+        
+        self.timer?.setDate(date)
         self.timer?.start()
+        
+        if let beer = currentBeer {
+            let defaults = NSUserDefaults.standardUserDefaults()
+            defaults.setObject(["title" : beer.title, "date" : date, "beer" : beer.toDictionary()], forKey: "order")
+            defaults.setObject(UIImagePNGRepresentation((beer.image?.squareImageTo(CGSizeMake(22,22)))!), forKey: "imageData")
+        }
+        
+        let complicationServer = CLKComplicationServer.sharedInstance()
+        
+        for complication in complicationServer.activeComplications {
+            complicationServer.reloadTimelineForComplication(complication)
+        }
     }
     
     // WatchConnectivity Methods
