@@ -23,19 +23,14 @@ class GlanceController: WKInterfaceController {
     override func willActivate() {
         super.willActivate()
         
-        let defaults = NSUserDefaults.standardUserDefaults()
-        
         var title : String?
         var date : NSDate?
         var beer : Beer?
         
-        if let order = defaults.objectForKey("order") as? [String : AnyObject] {
-            title = order["title"] as? String
-            date = order["date"] as? NSDate
-            
-            if let beerObject = order["beer"] as? [String : AnyObject] {
-                beer = Beer(dictionary: beerObject)
-            }
+        if let order = Order.currentOrder() {
+            title = order.title
+            date = order.date
+            beer = Beer(dictionary: order.beerDictionary)
             
             if let orderDate = date {
                 self.timer?.setDate(orderDate)

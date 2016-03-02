@@ -63,8 +63,7 @@ class InterfaceController: WKInterfaceController, WCSessionDelegate {
     }
     
     func resetOrder() {
-        let defaults = NSUserDefaults.standardUserDefaults()
-        defaults.setObject(nil, forKey: "order")
+        Order.clearOrder()
         
         self.group?.setHeight(100)
         self.button?.setTitle("Beer")
@@ -97,10 +96,8 @@ class InterfaceController: WKInterfaceController, WCSessionDelegate {
         self.timer?.setDate(date)
         self.timer?.start()
         
-        if let beer = currentBeer {
-            let defaults = NSUserDefaults.standardUserDefaults()
-            defaults.setObject(["title" : beer.title, "date" : date, "beer" : beer.toDictionary()], forKey: "order")
-            defaults.setObject(UIImagePNGRepresentation((beer.image?.squareImageTo(CGSizeMake(22,22)))!), forKey: "imageData")
+        if let beer = self.currentBeer {
+            Order(beer: beer, deliveryDate: date).send()
         }
         
         let complicationServer = CLKComplicationServer.sharedInstance()

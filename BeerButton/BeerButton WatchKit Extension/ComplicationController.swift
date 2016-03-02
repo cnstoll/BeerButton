@@ -12,24 +12,17 @@ import ClockKit
 class ComplicationController: NSObject, CLKComplicationDataSource {
     
     func getCurrentTimelineEntryForComplication(complication: CLKComplication, withHandler handler: ((CLKComplicationTimelineEntry?) -> Void)) {
-        let defaults = NSUserDefaults.standardUserDefaults()
-
         var title : String?
         var date : NSDate?
-        var image : UIImage?
         
-        if let order = defaults.objectForKey("order") as? [String : AnyObject] {
-            title = order["title"] as? String
-            date = order["date"] as? NSDate
-        }
-        
-        if let imageData = defaults.objectForKey("imageData") as? NSData {
-            image = UIImage(data: imageData)
+        if let order = Order.currentOrder() {
+            title = order.title
+            date = order.date
         }
         
         print(title, date)
         
-        if let orderTitle = title, orderDate = date, orderImage = image {
+        if let orderTitle = title, orderDate = date {
             let entry = CLKComplicationTimelineEntry()
             let template = CLKComplicationTemplateModularLargeStandardBody()
             
@@ -41,10 +34,6 @@ class ComplicationController: NSObject, CLKComplicationDataSource {
             
             let timeTextProvider = CLKRelativeDateTextProvider(date: orderDate, style: .Timer, units: .Second)
             template.body2TextProvider = timeTextProvider
-            
-            let imageProvider = CLKImageProvider(onePieceImage: orderImage)
-            template.headerImageProvider = imageProvider
-            template.headerImageProvider = nil
             
             entry.complicationTemplate = template
             entry.date = NSDate()

@@ -28,6 +28,10 @@ class ViewController: UITableViewController, UINavigationControllerDelegate, UII
                 beers.append(beer)
             }
         }
+    }
+    
+    override func viewDidAppear(animated: Bool) {
+        super.viewDidAppear(animated)
         
         updateWatchBeers()
     }
@@ -50,6 +54,24 @@ class ViewController: UITableViewController, UINavigationControllerDelegate, UII
         tableView.reloadData()
     }
     
+    func arrayOfBeerDictionaries() -> [[String : AnyObject]] {
+        var array : [[String : AnyObject]] = []
+        
+        for item in beers {
+            array.append(item.toDictionary())
+        }
+        
+        return array
+    }
+    
+    func updateCacheBeers() {
+        let array = arrayOfBeerDictionaries()
+        
+        // Update Saved Cache
+        let defaults = NSUserDefaults.standardUserDefaults()
+        defaults.setObject(array, forKey: "beers")
+    }
+    
     func updateWatchBeers() {
         // Start Session
         let session = WCSession.defaultSession()
@@ -61,13 +83,7 @@ class ViewController: UITableViewController, UINavigationControllerDelegate, UII
         // Update Context
         var context = session.applicationContext
         
-        var array : [[String : AnyObject]] = []
-        
-        for item in beers {
-            array.append(item.toDictionary())
-        }
-        
-        context["beers"] = array
+        context["beers"] = arrayOfBeerDictionaries()
         
         // Send Message
         do {
@@ -75,10 +91,6 @@ class ViewController: UITableViewController, UINavigationControllerDelegate, UII
         } catch let error {
             print(error)
         }
-        
-        // Update Saved Cache
-        let defaults = NSUserDefaults.standardUserDefaults()
-        defaults.setObject(array, forKey: "beers")
     }
     
     // Image Methods
