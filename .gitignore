@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # Xcode
 #
 # gitignore contributors: remember to update Global/Xcode.gitignore, Objective-C.gitignore & Swift.gitignore
@@ -61,3 +62,10 @@ Carthage/Build
 
 fastlane/report.xml
 fastlane/screenshots
+=======
+BeerButton/Build
+BeerButton/BeerButton.xcodeproj/project.xcworkspace/xcuserdata/conrad.stoll.xcuserdatad/UserInterfaceState.xcuserstate
+BeerButton/BeerButton.xcodeproj/xcuserdata/conrad.stoll.xcuserdatad/xcdebugger/Breakpoints_v2.xcbkptlist
+UserInterfaceState.xcuserstate
+Breakpoints_v2.xcbkptlist
+>>>>>>> 6763b9514c63186e28711aaf9c206a31cb021801
