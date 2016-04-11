@@ -102,7 +102,7 @@ class InterfaceController: WKInterfaceController, WCSessionDelegate {
         
         let complicationServer = CLKComplicationServer.sharedInstance()
         
-        for complication in complicationServer.activeComplications {
+        for complication in complicationServer.activeComplications! {
             complicationServer.reloadTimelineForComplication(complication)
         }
     }

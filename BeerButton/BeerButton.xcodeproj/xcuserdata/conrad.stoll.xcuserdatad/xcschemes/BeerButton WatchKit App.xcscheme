@@ -82,7 +82,7 @@
       <RemoteRunnable
          runnableDebuggingMode = "2"
          BundleIdentifier = "com.apple.carousel"
-         RemotePath = "/BeerButton WatchKit App">
+         RemotePath = "/Beer Button">
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "55FEF8DC1BE6ACBA00403186"
