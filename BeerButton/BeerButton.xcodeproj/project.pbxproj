@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		5522F92F1CBC74CA0035B87C /* NotificationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5522F92E1CBC74CA0035B87C /* NotificationController.swift */; };
 		554ACA921BE84749002EF27D /* ResizeImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55FEF9111BE717DC00403186 /* ResizeImage.swift */; };
 		55D1B3A71C87ABE400C2CED3 /* Order.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55D1B3A61C87ABE400C2CED3 /* Order.swift */; };
 		55D1B3A81C87ABE400C2CED3 /* Order.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55D1B3A61C87ABE400C2CED3 /* Order.swift */; };
@@ -73,6 +74,8 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		5522F92E1CBC74CA0035B87C /* NotificationController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NotificationController.swift; sourceTree = "<group>"; };
+		5522F9301CBC75DE0035B87C /* NotificationPayload.apns */ = {isa = PBXFileReference; lastKnownFileType = text; path = NotificationPayload.apns; sourceTree = "<group>"; };
 		55D1B3A61C87ABE400C2CED3 /* Order.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Order.swift; sourceTree = "<group>"; };
 		55FEF8CB1BE6ACBA00403186 /* BeerButton.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = BeerButton.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		55FEF8CE1BE6ACBA00403186 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -169,8 +172,10 @@
 				55FEF8F31BE6ACBB00403186 /* ExtensionDelegate.swift */,
 				55FEF8F51BE6ACBB00403186 /* GlanceController.swift */,
 				55FEF8F71BE6ACBB00403186 /* ComplicationController.swift */,
+				5522F92E1CBC74CA0035B87C /* NotificationController.swift */,
 				55FEF8F91BE6ACBB00403186 /* Assets.xcassets */,
 				55FEF8FB1BE6ACBB00403186 /* Info.plist */,
+				5522F9301CBC75DE0035B87C /* NotificationPayload.apns */,
 			);
 			path = "BeerButton WatchKit Extension";
 			sourceTree = "<group>";
@@ -322,6 +327,7 @@
 			files = (
 				55FEF8F41BE6ACBB00403186 /* ExtensionDelegate.swift in Sources */,
 				55FEF8F81BE6ACBB00403186 /* ComplicationController.swift in Sources */,
+				5522F92F1CBC74CA0035B87C /* NotificationController.swift in Sources */,
 				55FEF90E1BE70C4600403186 /* Beer.swift in Sources */,
 				55FEF8F21BE6ACBB00403186 /* InterfaceController.swift in Sources */,
 				55FEF8F61BE6ACBB00403186 /* GlanceController.swift in Sources */,

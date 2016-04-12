@@ -20,6 +20,7 @@ class InterfaceController: WKInterfaceController, WCSessionDelegate {
     
     var beers : [Beer] = []
     var currentBeer : Beer?
+    var session : WCSession?
     
     override func awakeWithContext(context: AnyObject?) {
         super.awakeWithContext(context)
@@ -27,6 +28,10 @@ class InterfaceController: WKInterfaceController, WCSessionDelegate {
         let session = WCSession.defaultSession()
         session.delegate = self
         session.activateSession()
+        
+        self.session = session
+        
+        restoreCachedBeers()
     }
 
     override func willActivate() {
@@ -39,6 +44,37 @@ class InterfaceController: WKInterfaceController, WCSessionDelegate {
 
     override func didDeactivate() {
         super.didDeactivate()
+    }
+    
+    func restoreCachedBeers() {
+        let defaults = NSUserDefaults.standardUserDefaults()
+        
+        if let array = defaults.objectForKey("beers") as? [[String : AnyObject]] {
+            beers.removeAll()
+            
+            for item in array {
+                let beer = Beer(dictionary: item)
+                beers.append(beer)
+            }
+        }
+    }
+    
+    func arrayOfBeerDictionaries() -> [[String : AnyObject]] {
+        var array : [[String : AnyObject]] = []
+        
+        for item in beers {
+            array.append(item.toDictionary())
+        }
+        
+        return array
+    }
+    
+    func updateCacheBeers() {
+        let array = arrayOfBeerDictionaries()
+        
+        // Update Saved Cache
+        let defaults = NSUserDefaults.standardUserDefaults()
+        defaults.setObject(array, forKey: "beers")
     }
     
     func updatePickerItems() {
@@ -91,13 +127,14 @@ class InterfaceController: WKInterfaceController, WCSessionDelegate {
             self.timer?.setAlpha(1)
         })
         
-        let date = NSDate(timeIntervalSinceNow: 122)
+        let date = NSDate(timeIntervalSinceNow: 22)
         
         self.timer?.setDate(date)
         self.timer?.start()
         
         if let beer = self.currentBeer {
-            Order(beer: beer, deliveryDate: date).send()
+            let notification = Order(beer: beer, deliveryDate: date).send()
+            sendMessageNotification(notification)
         }
         
         let complicationServer = CLKComplicationServer.sharedInstance()
@@ -109,6 +146,14 @@ class InterfaceController: WKInterfaceController, WCSessionDelegate {
     
     // WatchConnectivity Methods
     
+    func sendMessageNotification(notification : OrderNotification) {
+        if let session = self.session {
+            let message = Order.orderNotificationDictionary(notification)
+            
+            session.sendMessage(message, replyHandler: nil, errorHandler: nil)
+        }
+    }
+    
     func session(session: WCSession, didReceiveApplicationContext applicationContext: [String : AnyObject]) {
         if let array = applicationContext["beers"] as? [[String : AnyObject]] {
             beers.removeAll()
@@ -119,6 +164,7 @@ class InterfaceController: WKInterfaceController, WCSessionDelegate {
             }
             
             self.updatePickerItems()
+            self.updateCacheBeers()
         }
     }
 }

@@ -28,6 +28,8 @@ class ViewController: UITableViewController, UINavigationControllerDelegate, UII
                 beers.append(beer)
             }
         }
+        
+        updateWatchBeers()
     }
     
     override func viewDidAppear(animated: Bool) {
@@ -51,6 +53,7 @@ class ViewController: UITableViewController, UINavigationControllerDelegate, UII
         }
         
         updateWatchBeers()
+        updateCacheBeers()
         tableView.reloadData()
     }
     
@@ -71,6 +74,8 @@ class ViewController: UITableViewController, UINavigationControllerDelegate, UII
         let defaults = NSUserDefaults.standardUserDefaults()
         defaults.setObject(array, forKey: "beers")
     }
+    
+    // Session Methods
     
     func updateWatchBeers() {
         // Start Session
@@ -93,6 +98,10 @@ class ViewController: UITableViewController, UINavigationControllerDelegate, UII
         }
     }
     
+    func session(session: WCSession, didReceiveMessage message: [String : AnyObject]) {
+        self.notifyUser(message)
+    }
+    
     // Image Methods
     
     func imagePickerController(picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : AnyObject]) {
@@ -109,7 +118,6 @@ class ViewController: UITableViewController, UINavigationControllerDelegate, UII
                 self.pickedTitle = self.textField?.text
                 self.finishAddingBeer()
             })
-            
             
             alertController.addAction(doneAction)
             
@@ -139,6 +147,36 @@ class ViewController: UITableViewController, UINavigationControllerDelegate, UII
         }
         
         return cell
+    }
+    
+    // Notification Methods
+    
+    func notifyUser(message : [String : AnyObject]) {
+        let action = UIMutableUserNotificationAction()
+        action.identifier = "OrderDelivery"
+        action.title = "Your Beer"
+        action.activationMode = .Foreground
+        action.authenticationRequired = false
+        
+        let category = UIMutableUserNotificationCategory()
+        category.identifier = "BeerButtonOrderDelivery"
+        category.setActions([action], forContext: .Default)
+        
+        let settings = UIUserNotificationSettings(forTypes: .Alert, categories:Set(arrayLiteral: category))
+        UIApplication.sharedApplication().registerUserNotificationSettings(settings)
+        
+        let orderInfo = Order.orderNotification(message)
+
+        let localNotif = UILocalNotification()
+        localNotif.fireDate = NSDate(timeIntervalSinceNow: orderInfo.date.timeIntervalSinceNow - 10)
+        localNotif.timeZone = NSTimeZone.defaultTimeZone()
+        
+        localNotif.alertTitle = "Beer Delivery"
+        localNotif.alertBody = orderInfo.title
+        localNotif.category = "BeerButtonOrderDelivery"
+        localNotif.userInfo = message
+
+        UIApplication.sharedApplication().scheduleLocalNotification(localNotif)
     }
 }
 

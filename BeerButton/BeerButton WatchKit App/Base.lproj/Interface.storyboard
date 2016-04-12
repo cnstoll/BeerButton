@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder.WatchKit.Storyboard" version="3.0" toolsVersion="9059" systemVersion="15B42" targetRuntime="watchKit" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="AgC-eL-Hgc">
+<document type="com.apple.InterfaceBuilder.WatchKit.Storyboard" version="3.0" toolsVersion="10116" systemVersion="15D21" targetRuntime="watchKit" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="AgC-eL-Hgc">
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9049"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBWatchKitPlugin" version="9019"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10085"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBWatchKitPlugin" version="10032"/>
     </dependencies>
     <scenes>
         <!--Interface Controller-->
@@ -43,7 +43,7 @@
                     </connections>
                 </controller>
             </objects>
-            <point key="canvasLocation" x="164" y="210"/>
+            <point key="canvasLocation" x="178" y="13"/>
         </scene>
         <!--Glance Interface Controller-->
         <scene sceneID="rjY-Ar-IMT">
@@ -78,7 +78,44 @@
                     </connections>
                 </glanceController>
             </objects>
-            <point key="canvasLocation" x="164" y="514"/>
+            <point key="canvasLocation" x="178" y="317"/>
+        </scene>
+        <!--Static Notification Interface Controller-->
+        <scene sceneID="58z-EB-h36">
+            <objects>
+                <notificationController id="Rwr-N2-QJR">
+                    <items>
+                        <label alignment="left" text="Your order" id="p8e-iJ-6tl"/>
+                        <timer alignment="left" id="CiE-r8-iZ3"/>
+                        <label alignment="left" text="static" id="d14-0d-9Gs"/>
+                        <imageView width="60" height="60" alignment="left" id="D9j-Jn-n4r"/>
+                    </items>
+                    <notificationCategory key="notificationCategory" identifier="BeerButtonOrderDelivery" id="Wtf-E5-0E0"/>
+                    <connections>
+                        <outlet property="notificationAlertLabel" destination="p8e-iJ-6tl" id="U0I-dN-As2"/>
+                        <segue destination="8ZO-w1-3WN" kind="relationship" relationship="dynamicNotificationInterface" id="whl-mY-kpn"/>
+                    </connections>
+                </notificationController>
+            </objects>
+            <point key="canvasLocation" x="178" y="627"/>
+        </scene>
+        <!--Notification Controller-->
+        <scene sceneID="8zj-lB-XUK">
+            <objects>
+                <controller id="8ZO-w1-3WN" customClass="NotificationController" customModule="BeerButton_WatchKit_Extension">
+                    <items>
+                        <label height="43.5" alignment="left" text="Your porter will be delivered in" numberOfLines="2" id="Bgq-rg-5SC"/>
+                        <timer alignment="left" id="o2L-0E-bFy"/>
+                        <imageView width="60" height="60" alignment="left" id="gi3-YS-e03"/>
+                    </items>
+                    <connections>
+                        <outlet property="image" destination="gi3-YS-e03" id="aKB-Cm-vgI"/>
+                        <outlet property="label" destination="Bgq-rg-5SC" id="vjb-Mq-FZm"/>
+                        <outlet property="timer" destination="o2L-0E-bFy" id="QLk-lc-GXZ"/>
+                    </connections>
+                </controller>
+            </objects>
+            <point key="canvasLocation" x="478" y="632.75"/>
         </scene>
     </scenes>
 </document>
