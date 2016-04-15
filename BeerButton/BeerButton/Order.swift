@@ -58,7 +58,7 @@ struct Order {
     
     static func orderNotificationDictionary(notification : OrderNotification) -> [String : AnyObject] {
         let alert = ["body" : notification.title]
-        let aps = ["alert" : alert, "category" : "BeerButtonDeliveryNotification"]
+        let aps = ["alert" : alert, "category" : "BeerButtonOrderDelivery"]
         
         let dictionary = ["aps" : aps, "deliveryDate" : notification.date, "beerImage" : UIImagePNGRepresentation(notification.image)!]
         
