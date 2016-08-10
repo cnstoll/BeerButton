@@ -119,5 +119,4 @@ class ComplicationController: NSObject, CLKComplicationDataSource {
     func getPlaceholderTemplate(for complication: CLKComplication, withHandler handler: (CLKComplicationTemplate?) -> Void) {
         handler(nil)
     }
-    
 }

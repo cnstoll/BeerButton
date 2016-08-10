@@ -48,6 +48,7 @@ class InterfaceController: WKInterfaceController, WCSessionDelegate {
         }
         
         restoreCachedBeers()
+        updateComplication()
         updatePickerItems()
     }
     
@@ -97,6 +98,10 @@ class InterfaceController: WKInterfaceController, WCSessionDelegate {
     }
     
     @IBAction func pickerDidChange(_ index : Int) {
+        guard Order.currentOrder() == nil else {
+            return
+        }
+        
         let beer = beers[index]
         currentBeer = beer
     
@@ -109,11 +114,12 @@ class InterfaceController: WKInterfaceController, WCSessionDelegate {
     @IBAction func resetOrder() {
         Order.clearOrder()
         configureUI(status: .None)
+        updateComplication()
         updatePickerItems()
     }
     
     @IBAction func didOrderBeer(_ sender : WKInterfaceButton) {
-        let date = Date(timeIntervalSinceNow: 30)
+        let date = Date(timeIntervalSinceNow: 25 * 60)
         
         if let beer = self.currentBeer {
             let order = Order(beer: beer, deliveryDate: date)
