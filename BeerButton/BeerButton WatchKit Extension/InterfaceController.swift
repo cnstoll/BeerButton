@@ -22,7 +22,7 @@ class InterfaceController: WKInterfaceController, WCSessionDelegate {
     @IBOutlet weak var group : WKInterfaceGroup?
     @IBOutlet weak var picker : WKInterfacePicker?
     @IBOutlet weak var button : WKInterfaceButton?
-    @IBOutlet weak var timer : WKInterfaceTimer?
+    @IBOutlet weak var beerTimer : WKInterfaceLabel?
     @IBOutlet weak var beerTitle : WKInterfaceLabel?
     
     var beers : [Beer] = []
@@ -40,15 +40,15 @@ class InterfaceController: WKInterfaceController, WCSessionDelegate {
         
         self.session = session
         
-        restoreCachedBeers()
-        updatePickerItems()
-        
         if let order = Order.currentOrder() {
             configureUI(status: .Ordered(order, snapshot: false))
             startTimer(forOrder: order)
         } else {
             configureUI(status: .None)
         }
+        
+        restoreCachedBeers()
+        updatePickerItems()
     }
     
     // Lifecycle Methods
@@ -109,6 +109,7 @@ class InterfaceController: WKInterfaceController, WCSessionDelegate {
     @IBAction func resetOrder() {
         Order.clearOrder()
         configureUI(status: .None)
+        updatePickerItems()
     }
     
     @IBAction func didOrderBeer(_ sender : WKInterfaceButton) {
@@ -135,32 +136,42 @@ class InterfaceController: WKInterfaceController, WCSessionDelegate {
     // UI Methods
     
     func configureUI(status: OrderStatus) {
-        if case .Ordered(_, let snapshot) = status {
+        if case .Ordered(let order, let snapshot) = status {
             let size : CGFloat = snapshot ? 80 : 40
+            
+            self.group?.setHorizontalAlignment(.left)
+            self.group?.setVerticalAlignment(.top)
+            self.beerTimer?.setHorizontalAlignment(.left)
+            self.beerTimer?.setVerticalAlignment(.top)
+            self.beerTitle?.setHorizontalAlignment(.left)
+            self.beerTitle?.setVerticalAlignment(.top)
             
             self.group?.setHeight(size)
             self.button?.setTitle("")
             self.group?.setWidth(size)
             self.group?.setCornerRadius(size / 2)
             self.button?.setAlpha(0)
-            self.timer?.setAlpha(1)
+            self.beerTimer?.setAlpha(1)
             self.beerTitle?.setAlpha(1)
+            self.beerTitle?.setText(order.title)
         } else {
+            self.group?.setHorizontalAlignment(.center)
+            self.group?.setVerticalAlignment(.center)
+            self.beerTimer?.setHorizontalAlignment(.center)
+            self.beerTimer?.setVerticalAlignment(.bottom)
+            self.beerTitle?.setHorizontalAlignment(.center)
+            self.beerTitle?.setVerticalAlignment(.bottom)
+            
             self.group?.setHeight(100)
-            self.button?.setTitle("Beer")
             self.group?.setWidth(100)
             self.group?.setCornerRadius(50)
             self.button?.setAlpha(1)
-            self.timer?.setAlpha(0)
-            self.timer?.stop()
+            self.beerTimer?.setAlpha(0)
             self.beerTitle?.setAlpha(0)
         }
     }
     
     func startTimer(forOrder order: Order) {
-        self.timer?.setDate(order.date)
-        self.timer?.start()
-        
         self.secondTimer?.invalidate()
         self.secondTimer = nil
         
@@ -175,7 +186,13 @@ class InterfaceController: WKInterfaceController, WCSessionDelegate {
                 self.secondTimer = nil
             }
             
-            self.beerTitle?.setText(String(remainingTime))
+            let formatter = DateComponentsFormatter()
+            formatter.allowedUnits = [.minute, .second, .nanosecond]
+            formatter.unitsStyle = .positional
+            formatter.zeroFormattingBehavior = .pad
+            
+            let time = formatter.string(from: remainingTime)
+            self.beerTimer?.setText(time)
         })
     }
     
@@ -204,7 +221,8 @@ class InterfaceController: WKInterfaceController, WCSessionDelegate {
         content.userInfo = message
         content.categoryIdentifier = "BeerButtonOrderDelivery"
         
-        let trigger = UNTimeIntervalNotificationTrigger(timeInterval: orderInfo.date.timeIntervalSinceNow - 10, repeats: false)
+        let time = orderInfo.date.timeIntervalSinceNow - 20
+        let trigger = UNTimeIntervalNotificationTrigger(timeInterval: time, repeats: false)
         
         let _ = UNNotificationRequest(identifier: "Delivery", content: content, trigger: trigger)
         let _ = UNUserNotificationCenter.current()

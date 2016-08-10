@@ -15,26 +15,19 @@
                                 <action selector="pickerDidChange:" destination="AgC-eL-Hgc" id="ra9-TE-k6p"/>
                             </connections>
                         </picker>
-                        <group width="100" height="100" alignment="center" verticalAlignment="center" layout="vertical" radius="50" id="ILQ-OM-Spz">
+                        <group width="100" height="100" alignment="left" layout="vertical" radius="50" id="ILQ-OM-Spz">
                             <items>
-                                <group width="100" height="100" alignment="center" verticalAlignment="center" radius="50" id="St9-xz-pwt">
-                                    <items>
-                                        <button width="1" height="1" alignment="left" verticalAlignment="center" title="Beer" backgroundImage="button" id="gtZ-Fd-P3T">
-                                            <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                            <connections>
-                                                <action selector="didOrderBeer:" destination="AgC-eL-Hgc" id="tHx-Wx-Qsb"/>
-                                            </connections>
-                                        </button>
-                                    </items>
+                                <button width="1" height="1" alignment="left" verticalAlignment="center" backgroundImage="button" id="gtZ-Fd-P3T">
                                     <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                </group>
-                                <timer alignment="center" verticalAlignment="center" alpha="0.0" id="tBf-22-BZX">
-                                    <calendarUnit key="units" minute="YES" second="YES"/>
-                                </timer>
+                                    <connections>
+                                        <action selector="didOrderBeer:" destination="AgC-eL-Hgc" id="tHx-Wx-Qsb"/>
+                                    </connections>
+                                </button>
                             </items>
                             <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         </group>
-                        <label alignment="center" verticalAlignment="bottom" text="Label" id="7ad-PX-4ax"/>
+                        <label alignment="left" text="Label" id="7ad-PX-4ax"/>
+                        <label alignment="left" text="Label" id="PrQ-LI-2qq"/>
                     </items>
                     <menu key="menu" id="0rx-9b-CvO">
                         <items>
@@ -46,11 +39,11 @@
                         </items>
                     </menu>
                     <connections>
+                        <outlet property="beerTimer" destination="PrQ-LI-2qq" id="LoO-gu-CrT"/>
                         <outlet property="beerTitle" destination="7ad-PX-4ax" id="cSO-Vr-v6g"/>
                         <outlet property="button" destination="gtZ-Fd-P3T" id="2HN-Na-dBi"/>
-                        <outlet property="group" destination="St9-xz-pwt" id="g0h-xz-asM"/>
+                        <outlet property="group" destination="ILQ-OM-Spz" id="2f0-NI-q4k"/>
                         <outlet property="picker" destination="kO9-sj-QJJ" id="9ef-Ed-anM"/>
-                        <outlet property="timer" destination="tBf-22-BZX" id="v19-gb-j4H"/>
                     </connections>
                 </controller>
             </objects>
