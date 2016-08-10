@@ -58,6 +58,19 @@ class ComplicationController: NSObject, CLKComplicationDataSource {
         handler(nil);
     }
     
+    // MARK: - Gallery Methods
+    
+    func getLocalizableSampleTemplate(for complication: CLKComplication, withHandler handler: (CLKComplicationTemplate?) -> Void) {
+        let template = CLKComplicationTemplateModularLargeStandardBody()
+        
+        let headerTextProvider = CLKSimpleTextProvider(text: "Beer Button")
+        template.headerTextProvider = headerTextProvider
+        
+        let titleTextProvider = CLKSimpleTextProvider(text: "Place Order")
+        template.body1TextProvider = titleTextProvider
+        
+        handler(template)
+    }
     
     // MARK: - Default Method Implementations
 
