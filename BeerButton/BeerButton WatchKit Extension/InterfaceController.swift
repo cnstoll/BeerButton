@@ -147,12 +147,14 @@ class InterfaceController: WKInterfaceController, WCSessionDelegate {
             self.beerTitle?.setVerticalAlignment(.top)
             
             self.group?.setHeight(size)
-            self.button?.setTitle("")
             self.group?.setWidth(size)
             self.group?.setCornerRadius(size / 2)
+            
             self.button?.setAlpha(0)
             self.beerTimer?.setAlpha(1)
             self.beerTitle?.setAlpha(1)
+            
+            self.button?.setTitle("")
             self.beerTitle?.setText(order.title)
         } else {
             self.group?.setHorizontalAlignment(.center)
@@ -165,6 +167,7 @@ class InterfaceController: WKInterfaceController, WCSessionDelegate {
             self.group?.setHeight(100)
             self.group?.setWidth(100)
             self.group?.setCornerRadius(50)
+            
             self.button?.setAlpha(1)
             self.beerTimer?.setAlpha(0)
             self.beerTitle?.setAlpha(0)
