@@ -5,29 +5,46 @@
         <plugIn identifier="com.apple.InterfaceBuilder.IBWatchKitPlugin" version="11077"/>
     </dependencies>
     <scenes>
+        <!--Static Notification Interface Controller-->
+        <scene sceneID="F0J-ee-Nns">
+            <objects>
+                <notificationController id="SqV-ik-NNk">
+                    <items>
+                        <label alignment="left" text="Your order" id="j0S-z3-CD4"/>
+                        <label alignment="left" text="static" id="XB8-Oh-Fdm"/>
+                        <timer alignment="left" id="jtY-IC-ne5"/>
+                        <imageView width="60" height="60" alignment="left" id="r14-5w-jE7"/>
+                    </items>
+                    <notificationCategory key="notificationCategory" identifier="BeerButtonOrderDelivery" id="EVc-1X-o6n"/>
+                    <connections>
+                        <outlet property="notificationAlertLabel" destination="j0S-z3-CD4" id="GqU-TM-e5g"/>
+                        <segue destination="IlX-Le-t26" kind="relationship" relationship="dynamicNotificationInterface" id="iYy-ph-58D"/>
+                    </connections>
+                </notificationController>
+            </objects>
+            <point key="canvasLocation" x="-144" y="362"/>
+        </scene>
         <!--Interface Controller-->
         <scene sceneID="aou-V4-d1y">
             <objects>
                 <controller id="AgC-eL-Hgc" customClass="InterfaceController" customModule="BeerButton_WatchKit_App" customModuleProvider="target">
                     <items>
-                        <picker width="136" height="2" alignment="left" id="kO9-sj-QJJ">
+                        <picker height="2" alignment="left" style="stack" id="VNU-FE-6TX">
                             <connections>
-                                <action selector="pickerDidChange:" destination="AgC-eL-Hgc" id="ra9-TE-k6p"/>
+                                <action selector="pickerDidChange:" destination="AgC-eL-Hgc" id="FZc-Dc-xpW"/>
                             </connections>
                         </picker>
-                        <group width="100" height="100" alignment="left" layout="vertical" radius="50" id="ILQ-OM-Spz">
+                        <group width="100" height="100" alignment="center" verticalAlignment="center" layout="vertical" id="ki8-Oh-l5k">
                             <items>
-                                <button width="1" height="1" alignment="left" verticalAlignment="center" backgroundImage="button" id="gtZ-Fd-P3T">
-                                    <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <button width="100" height="100" alignment="center" verticalAlignment="center" title="Button" backgroundImage="button" id="rIA-Q4-nLN">
                                     <connections>
-                                        <action selector="didOrderBeer:" destination="AgC-eL-Hgc" id="tHx-Wx-Qsb"/>
+                                        <action selector="didOrderBeer:" destination="AgC-eL-Hgc" id="3Y2-eq-YrR"/>
                                     </connections>
                                 </button>
                             </items>
-                            <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         </group>
-                        <label alignment="left" text="Label" id="7ad-PX-4ax"/>
-                        <label alignment="left" text="Label" id="PrQ-LI-2qq"/>
+                        <label alignment="left" verticalAlignment="bottom" text="Label" id="cmg-0c-PDP"/>
+                        <label alignment="left" verticalAlignment="bottom" text="Label" id="y1j-qh-w4n"/>
                     </items>
                     <menu key="menu" id="0rx-9b-CvO">
                         <items>
@@ -39,52 +56,33 @@
                         </items>
                     </menu>
                     <connections>
-                        <outlet property="beerTimer" destination="PrQ-LI-2qq" id="LoO-gu-CrT"/>
-                        <outlet property="beerTitle" destination="7ad-PX-4ax" id="cSO-Vr-v6g"/>
-                        <outlet property="button" destination="gtZ-Fd-P3T" id="2HN-Na-dBi"/>
-                        <outlet property="group" destination="ILQ-OM-Spz" id="2f0-NI-q4k"/>
-                        <outlet property="picker" destination="kO9-sj-QJJ" id="9ef-Ed-anM"/>
+                        <outlet property="beerTimer" destination="y1j-qh-w4n" id="V6r-M9-Rb5"/>
+                        <outlet property="beerTitle" destination="cmg-0c-PDP" id="Xa3-CD-ofs"/>
+                        <outlet property="button" destination="rIA-Q4-nLN" id="pEz-Fg-hsS"/>
+                        <outlet property="group" destination="ki8-Oh-l5k" id="Opk-Kr-RBg"/>
+                        <outlet property="picker" destination="VNU-FE-6TX" id="ll5-k3-5y6"/>
                     </connections>
                 </controller>
             </objects>
-            <point key="canvasLocation" x="178" y="88"/>
-        </scene>
-        <!--Static Notification Interface Controller-->
-        <scene sceneID="58z-EB-h36">
-            <objects>
-                <notificationController id="Rwr-N2-QJR">
-                    <items>
-                        <label alignment="left" text="Your order" id="p8e-iJ-6tl"/>
-                        <timer alignment="left" id="CiE-r8-iZ3"/>
-                        <label alignment="left" text="static" id="d14-0d-9Gs"/>
-                        <imageView width="60" height="60" alignment="left" id="D9j-Jn-n4r"/>
-                    </items>
-                    <notificationCategory key="notificationCategory" identifier="BeerButtonOrderDelivery" id="Wtf-E5-0E0"/>
-                    <connections>
-                        <outlet property="notificationAlertLabel" destination="p8e-iJ-6tl" id="U0I-dN-As2"/>
-                        <segue destination="8ZO-w1-3WN" kind="relationship" relationship="dynamicNotificationInterface" id="whl-mY-kpn"/>
-                    </connections>
-                </notificationController>
-            </objects>
-            <point key="canvasLocation" x="178" y="627"/>
+            <point key="canvasLocation" x="-84" y="-20"/>
         </scene>
         <!--Notification Controller-->
-        <scene sceneID="8zj-lB-XUK">
+        <scene sceneID="mhs-xG-kwa">
             <objects>
-                <controller id="8ZO-w1-3WN" customClass="NotificationController" customModule="BeerButton_WatchKit_Extension">
+                <controller id="IlX-Le-t26" customClass="NotificationController" customModule="BeerButton_WatchKit_Extension">
                     <items>
-                        <label height="43.5" alignment="left" text="Your porter will be delivered in" numberOfLines="2" id="Bgq-rg-5SC"/>
-                        <timer alignment="left" id="o2L-0E-bFy"/>
-                        <imageView width="60" height="60" alignment="left" id="gi3-YS-e03"/>
+                        <label height="43.5" alignment="left" text="Your porter will be delivered in" numberOfLines="2" id="CI8-Gq-Spg"/>
+                        <timer alignment="left" id="biU-TS-HL7"/>
+                        <imageView width="60" height="60" alignment="left" id="yGg-GO-FD8"/>
                     </items>
                     <connections>
-                        <outlet property="image" destination="gi3-YS-e03" id="aKB-Cm-vgI"/>
-                        <outlet property="label" destination="Bgq-rg-5SC" id="vjb-Mq-FZm"/>
-                        <outlet property="timer" destination="o2L-0E-bFy" id="QLk-lc-GXZ"/>
+                        <outlet property="image" destination="yGg-GO-FD8" id="Xgh-ih-b4s"/>
+                        <outlet property="label" destination="CI8-Gq-Spg" id="nwZ-k6-6x4"/>
+                        <outlet property="timer" destination="biU-TS-HL7" id="7pb-HJ-QJM"/>
                     </connections>
                 </controller>
             </objects>
-            <point key="canvasLocation" x="478" y="632.75"/>
+            <point key="canvasLocation" x="156" y="362"/>
         </scene>
     </scenes>
 </document>

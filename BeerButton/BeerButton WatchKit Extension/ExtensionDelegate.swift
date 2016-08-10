@@ -89,14 +89,14 @@ class ExtensionDelegate: NSObject, WKExtensionDelegate, UNUserNotificationCenter
     }
     
     func setNotificationPreferences() {
-        let action = UNNotificationAction(identifier: "OrderDelivery", title: "Your Beer", options: .foreground)
-        let category = UNNotificationCategory(identifier: "BeerButtonOrderDelivery", actions: [action], intentIdentifiers: [], options: UNNotificationCategoryOptions())
-        
         let center = UNUserNotificationCenter.current()
+        center.requestAuthorization(options: [.alert]) { (granted, error) in }
+        
+        let action = UNNotificationAction(identifier: "OrderDelivery", title: "Your Beer", options: .foreground)
+        let category = UNNotificationCategory(identifier: "BeerButtonOrderDelivery", actions: [action], intentIdentifiers: [], options: [.allowInCarPlay, .customDismissAction])
+        
         center.delegate = self
         center.setNotificationCategories([category])
-        
-        center.requestAuthorization(options: [.alert]) { (granted, error) in }
     }
     
     /// MARK - UNUserNotificationCenterDelegate Methods

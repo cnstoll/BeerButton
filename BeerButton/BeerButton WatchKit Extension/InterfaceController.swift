@@ -233,11 +233,11 @@ class InterfaceController: WKInterfaceController, WCSessionDelegate {
         let time = orderInfo.date.timeIntervalSinceNow - 20
         let trigger = UNTimeIntervalNotificationTrigger(timeInterval: time, repeats: false)
         
-        let _ = UNNotificationRequest(identifier: "Delivery", content: content, trigger: trigger)
-        let _ = UNUserNotificationCenter.current()
+        let request = UNNotificationRequest(identifier: "Delivery", content: content, trigger: trigger)
+        let center = UNUserNotificationCenter.current()
 
         // Disabled due to Xcode 8 Beta 5 Simulator Bug
-        //center.add(request, withCompletionHandler: nil)
+        center.add(request, withCompletionHandler: nil)
     }
     
     // WatchConnectivity Methods
