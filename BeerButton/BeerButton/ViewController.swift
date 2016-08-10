@@ -20,9 +20,9 @@ class ViewController: UITableViewController, UINavigationControllerDelegate, UII
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        let defaults = NSUserDefaults.standardUserDefaults()
+        let defaults = UserDefaults.standard
         
-        if let array = defaults.objectForKey("beers") as? [[String : AnyObject]] {
+        if let array = defaults.object(forKey: "beers") as? [[String : AnyObject]] {
             for item in array {
                 let beer = Beer(dictionary: item)
                 beers.append(beer)
@@ -32,20 +32,20 @@ class ViewController: UITableViewController, UINavigationControllerDelegate, UII
         updateWatchBeers()
     }
     
-    override func viewDidAppear(animated: Bool) {
+    override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         
         updateWatchBeers()
     }
 
-    @IBAction func addBeer(sender : AnyObject) {
+    @IBAction func addBeer(_ sender : AnyObject) {
         let imagePicker = UIImagePickerController()
         imagePicker.delegate = self
-        self.presentViewController(imagePicker, animated: true, completion: nil)
+        self.present(imagePicker, animated: true, completion: nil)
     }
     
     func finishAddingBeer() {
-        if let title = pickedTitle, image = pickedImage {
+        if let title = pickedTitle, let image = pickedImage {
             let thumbnail = image.squareImageTo(CGSize(width: 100, height: 100))
             
             let beer = Beer(title: title, image: thumbnail)
@@ -71,19 +71,19 @@ class ViewController: UITableViewController, UINavigationControllerDelegate, UII
         let array = arrayOfBeerDictionaries()
         
         // Update Saved Cache
-        let defaults = NSUserDefaults.standardUserDefaults()
-        defaults.setObject(array, forKey: "beers")
+        let defaults = UserDefaults.standard
+        defaults.set(array, forKey: "beers")
     }
     
     // Session Methods
     
     func updateWatchBeers() {
         // Start Session
-        let session = WCSession.defaultSession()
+        let session = WCSession.default()
         session.delegate = self
         
         // Remember to activate session
-        session.activateSession()
+        session.activate()
         
         // Update Context
         var context = session.applicationContext
@@ -96,49 +96,59 @@ class ViewController: UITableViewController, UINavigationControllerDelegate, UII
         } catch let error {
             print(error)
         }
+        
+        
     }
     
-    func session(session: WCSession, didReceiveMessage message: [String : AnyObject]) {
-        self.notifyUser(message)
+    public func session(_ session: WCSession, activationDidCompleteWith activationState: WCSessionActivationState, error: Error?) {
+        
+    }
+    
+    public func sessionDidBecomeInactive(_ session: WCSession) {
+        
+    }
+    
+    public func sessionDidDeactivate(_ session: WCSession) {
+        
     }
     
     // Image Methods
     
-    func imagePickerController(picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : AnyObject]) {
+    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : AnyObject]) {
         self.pickedImage = info[UIImagePickerControllerOriginalImage] as? UIImage
         
-        self.dismissViewControllerAnimated(true, completion: {
-            let alertController = UIAlertController(title: "Name your beer", message: "", preferredStyle: UIAlertControllerStyle.Alert)
+        self.dismiss(animated: true, completion: {
+            let alertController = UIAlertController(title: "Name your beer", message: "", preferredStyle: UIAlertControllerStyle.alert)
             
-            alertController.addTextFieldWithConfigurationHandler({ (textField : UITextField) -> Void in
+            alertController.addTextField(configurationHandler: { (textField : UITextField) -> Void in
                 self.textField = textField
             })
             
-            let doneAction = UIAlertAction(title: "Done", style: UIAlertActionStyle.Default, handler: { (sender : UIAlertAction) -> Void in
+            let doneAction = UIAlertAction(title: "Done", style: UIAlertActionStyle.default, handler: { (sender : UIAlertAction) -> Void in
                 self.pickedTitle = self.textField?.text
                 self.finishAddingBeer()
             })
             
             alertController.addAction(doneAction)
             
-            self.presentViewController(alertController, animated: true, completion: nil)
+            self.present(alertController, animated: true, completion: nil)
         })
     }
     
     // Table View Methods
     
-    override func numberOfSectionsInTableView(tableView: UITableView) -> Int {
+    override func numberOfSections(in tableView: UITableView) -> Int {
         return 1
     }
     
-    override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return beers.count
     }
     
-    override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCellWithIdentifier("BeerCell", forIndexPath: indexPath) as! BeerCell
+    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCell(withIdentifier: "BeerCell", for: indexPath) as! BeerCell
         
-        let beer = beers[indexPath.row]
+        let beer = beers[(indexPath as NSIndexPath).row]
         
         cell.beerLabel?.text = beer.title
         
@@ -147,36 +157,6 @@ class ViewController: UITableViewController, UINavigationControllerDelegate, UII
         }
         
         return cell
-    }
-    
-    // Notification Methods
-    
-    func notifyUser(message : [String : AnyObject]) {
-        let action = UIMutableUserNotificationAction()
-        action.identifier = "OrderDelivery"
-        action.title = "Your Beer"
-        action.activationMode = .Foreground
-        action.authenticationRequired = false
-        
-        let category = UIMutableUserNotificationCategory()
-        category.identifier = "BeerButtonOrderDelivery"
-        category.setActions([action], forContext: .Default)
-        
-        let settings = UIUserNotificationSettings(forTypes: .Alert, categories:Set(arrayLiteral: category))
-        UIApplication.sharedApplication().registerUserNotificationSettings(settings)
-        
-        let orderInfo = Order.orderNotification(message)
-
-        let localNotif = UILocalNotification()
-        localNotif.fireDate = NSDate(timeIntervalSinceNow: orderInfo.date.timeIntervalSinceNow - 10)
-        localNotif.timeZone = NSTimeZone.defaultTimeZone()
-        
-        localNotif.alertTitle = "Beer Delivery"
-        localNotif.alertBody = orderInfo.title
-        localNotif.category = "BeerButtonOrderDelivery"
-        localNotif.userInfo = message
-
-        UIApplication.sharedApplication().scheduleLocalNotification(localNotif)
     }
 }
 

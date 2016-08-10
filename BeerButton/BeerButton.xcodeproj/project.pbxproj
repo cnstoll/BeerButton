@@ -22,7 +22,6 @@
 		55FEF8ED1BE6ACBA00403186 /* BeerButton WatchKit Extension.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = 55FEF8EC1BE6ACBA00403186 /* BeerButton WatchKit Extension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		55FEF8F21BE6ACBB00403186 /* InterfaceController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55FEF8F11BE6ACBB00403186 /* InterfaceController.swift */; };
 		55FEF8F41BE6ACBB00403186 /* ExtensionDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55FEF8F31BE6ACBB00403186 /* ExtensionDelegate.swift */; };
-		55FEF8F61BE6ACBB00403186 /* GlanceController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55FEF8F51BE6ACBB00403186 /* GlanceController.swift */; };
 		55FEF8F81BE6ACBB00403186 /* ComplicationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55FEF8F71BE6ACBB00403186 /* ComplicationController.swift */; };
 		55FEF8FA1BE6ACBB00403186 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 55FEF8F91BE6ACBB00403186 /* Assets.xcassets */; };
 		55FEF90A1BE6AEEB00403186 /* Beer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55FEF9091BE6AEEB00403186 /* Beer.swift */; };
@@ -91,7 +90,6 @@
 		55FEF8EC1BE6ACBA00403186 /* BeerButton WatchKit Extension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = "BeerButton WatchKit Extension.appex"; sourceTree = BUILT_PRODUCTS_DIR; };
 		55FEF8F11BE6ACBB00403186 /* InterfaceController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InterfaceController.swift; sourceTree = "<group>"; };
 		55FEF8F31BE6ACBB00403186 /* ExtensionDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExtensionDelegate.swift; sourceTree = "<group>"; };
-		55FEF8F51BE6ACBB00403186 /* GlanceController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GlanceController.swift; sourceTree = "<group>"; };
 		55FEF8F71BE6ACBB00403186 /* ComplicationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ComplicationController.swift; sourceTree = "<group>"; };
 		55FEF8F91BE6ACBB00403186 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		55FEF8FB1BE6ACBB00403186 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -170,7 +168,6 @@
 			children = (
 				55FEF8F11BE6ACBB00403186 /* InterfaceController.swift */,
 				55FEF8F31BE6ACBB00403186 /* ExtensionDelegate.swift */,
-				55FEF8F51BE6ACBB00403186 /* GlanceController.swift */,
 				55FEF8F71BE6ACBB00403186 /* ComplicationController.swift */,
 				5522F92E1CBC74CA0035B87C /* NotificationController.swift */,
 				55FEF8F91BE6ACBB00403186 /* Assets.xcassets */,
@@ -243,17 +240,23 @@
 			isa = PBXProject;
 			attributes = {
 				LastSwiftUpdateCheck = 0710;
-				LastUpgradeCheck = 0710;
+				LastUpgradeCheck = 0800;
 				ORGANIZATIONNAME = "Conrad Stoll";
 				TargetAttributes = {
 					55FEF8CA1BE6ACBA00403186 = {
 						CreatedOnToolsVersion = 7.1;
+						DevelopmentTeam = GX7CGWUZDA;
+						LastSwiftMigration = 0800;
 					};
 					55FEF8DC1BE6ACBA00403186 = {
 						CreatedOnToolsVersion = 7.1;
+						DevelopmentTeam = GX7CGWUZDA;
+						LastSwiftMigration = 0800;
 					};
 					55FEF8EB1BE6ACBA00403186 = {
 						CreatedOnToolsVersion = 7.1;
+						DevelopmentTeam = GX7CGWUZDA;
+						LastSwiftMigration = 0800;
 					};
 				};
 			};
@@ -330,7 +333,6 @@
 				5522F92F1CBC74CA0035B87C /* NotificationController.swift in Sources */,
 				55FEF90E1BE70C4600403186 /* Beer.swift in Sources */,
 				55FEF8F21BE6ACBB00403186 /* InterfaceController.swift in Sources */,
-				55FEF8F61BE6ACBB00403186 /* GlanceController.swift in Sources */,
 				554ACA921BE84749002EF27D /* ResizeImage.swift in Sources */,
 				55D1B3A81C87ABE400C2CED3 /* Order.swift in Sources */,
 			);
@@ -392,8 +394,10 @@
 				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
 				CLANG_WARN_EMPTY_BODY = YES;
 				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
@@ -436,8 +440,10 @@
 				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
 				CLANG_WARN_EMPTY_BODY = YES;
 				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
@@ -464,14 +470,16 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_COMPLICATION_NAME = Complication;
+				DEVELOPMENT_TEAM = GX7CGWUZDA;
 				INFOPLIST_FILE = "BeerButton WatchKit Extension/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.conradstoll.BeerButton.watchkitapp.watchkitextension;
 				PRODUCT_NAME = "${TARGET_NAME}";
 				SDKROOT = watchos;
 				SKIP_INSTALL = YES;
+				SWIFT_VERSION = 3.0;
 				TARGETED_DEVICE_FAMILY = 4;
-				WATCHOS_DEPLOYMENT_TARGET = 2.0;
+				WATCHOS_DEPLOYMENT_TARGET = 3.0;
 			};
 			name = Debug;
 		};
@@ -479,46 +487,53 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_COMPLICATION_NAME = Complication;
+				DEVELOPMENT_TEAM = GX7CGWUZDA;
 				INFOPLIST_FILE = "BeerButton WatchKit Extension/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.conradstoll.BeerButton.watchkitapp.watchkitextension;
 				PRODUCT_NAME = "${TARGET_NAME}";
 				SDKROOT = watchos;
 				SKIP_INSTALL = YES;
+				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
+				SWIFT_VERSION = 3.0;
 				TARGETED_DEVICE_FAMILY = 4;
-				WATCHOS_DEPLOYMENT_TARGET = 2.0;
+				WATCHOS_DEPLOYMENT_TARGET = 3.0;
 			};
 			name = Release;
 		};
 		55FEF9031BE6ACBB00403186 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				EMBEDDED_CONTENT_CONTAINS_SWIFT = YES;
+				DEVELOPMENT_TEAM = GX7CGWUZDA;
 				IBSC_MODULE = BeerButton_WatchKit_Extension;
 				INFOPLIST_FILE = "BeerButton WatchKit App/Info.plist";
 				PRODUCT_BUNDLE_IDENTIFIER = com.conradstoll.BeerButton.watchkitapp;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = watchos;
 				SKIP_INSTALL = YES;
+				SWIFT_VERSION = 3.0;
 				TARGETED_DEVICE_FAMILY = 4;
-				WATCHOS_DEPLOYMENT_TARGET = 2.0;
+				WATCHOS_DEPLOYMENT_TARGET = 3.0;
 			};
 			name = Debug;
 		};
 		55FEF9041BE6ACBB00403186 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				EMBEDDED_CONTENT_CONTAINS_SWIFT = YES;
+				DEVELOPMENT_TEAM = GX7CGWUZDA;
 				IBSC_MODULE = BeerButton_WatchKit_Extension;
 				INFOPLIST_FILE = "BeerButton WatchKit App/Info.plist";
 				PRODUCT_BUNDLE_IDENTIFIER = com.conradstoll.BeerButton.watchkitapp;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = watchos;
 				SKIP_INSTALL = YES;
+				SWIFT_VERSION = 3.0;
 				TARGETED_DEVICE_FAMILY = 4;
-				WATCHOS_DEPLOYMENT_TARGET = 2.0;
+				WATCHOS_DEPLOYMENT_TARGET = 3.0;
 			};
 			name = Release;
 		};
@@ -526,10 +541,13 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				DEVELOPMENT_TEAM = GX7CGWUZDA;
 				INFOPLIST_FILE = BeerButton/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.conradstoll.BeerButton;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 3.0;
 			};
 			name = Debug;
 		};
@@ -537,10 +555,14 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				DEVELOPMENT_TEAM = GX7CGWUZDA;
 				INFOPLIST_FILE = BeerButton/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.conradstoll.BeerButton;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
+				SWIFT_VERSION = 3.0;
 			};
 			name = Release;
 		};

@@ -11,18 +11,18 @@ import UIKit
 
 struct Order {
     var title = ""
-    var date : NSDate
+    var date : Date
     var beerDictionary : [String : AnyObject]
     
-    init(beer : Beer, deliveryDate : NSDate) {
+    init(beer : Beer, deliveryDate : Date) {
         self.title = beer.title
         self.beerDictionary = beer.toDictionary()
         self.date = deliveryDate
     }
     
     func send() -> OrderNotification {
-        let defaults = NSUserDefaults.standardUserDefaults()
-        defaults.setObject(["title" : self.title, "date" : date, "beer" : self.beerDictionary], forKey: "order")
+        let defaults = UserDefaults.standard
+        defaults.set(["title" : self.title, "date" : date, "beer" : self.beerDictionary], forKey: "order")
         
         let title = "Your " + self.title + " will be delivered in"
         let beer = Beer(dictionary: beerDictionary)
@@ -33,14 +33,19 @@ struct Order {
     }
     
     static func currentOrder() -> Order? {
-        let defaults = NSUserDefaults.standardUserDefaults()
+        let defaults = UserDefaults.standard
         
-        if let order = defaults.objectForKey("order") as? [String : AnyObject] {
+        if let order = defaults.object(forKey: "order") as? [String : AnyObject] {
             if let beerDictionary = order["beer"] as? [String : AnyObject] {
                 let beer = Beer(dictionary: beerDictionary)
-                let date = order["date"] as? NSDate
+                let date = order["date"] as? Date
                 
                 if let orderDate = date {
+                    if orderDate.timeIntervalSinceNow < Date().timeIntervalSinceNow {
+                        clearOrder()
+                        return nil
+                    }
+                    
                     let order = Order(beer: beer, deliveryDate: orderDate)
                     
                     return order
@@ -52,11 +57,11 @@ struct Order {
     }
     
     static func clearOrder() {
-        let defaults = NSUserDefaults.standardUserDefaults()
-        defaults.setObject(nil, forKey: "order")
+        let defaults = UserDefaults.standard
+        defaults.set(nil, forKey: "order")
     }
     
-    static func orderNotificationDictionary(notification : OrderNotification) -> [String : AnyObject] {
+    static func orderNotificationDictionary(_ notification : OrderNotification) -> [String : AnyObject] {
         let alert = ["body" : notification.title]
         let aps = ["alert" : alert, "category" : "BeerButtonOrderDelivery"]
         
@@ -65,10 +70,10 @@ struct Order {
         return dictionary
     }
     
-    static func orderNotification(dictionary : [String : AnyObject]) -> OrderNotification {
+    static func orderNotification(_ dictionary : [String : AnyObject]) -> OrderNotification {
         let title = dictionary["aps"]!["alert"]!!["body"]! as! String
-        let date = dictionary["deliveryDate"]! as! NSDate
-        let image = UIImage(data: dictionary["beerImage"]! as! NSData)!
+        let date = dictionary["deliveryDate"]! as! Date
+        let image = UIImage(data: dictionary["beerImage"]! as! Data)!
 
         let notification = OrderNotification(title: title, date: date, image: image)
         
@@ -78,7 +83,7 @@ struct Order {
 
 struct OrderNotification {
     let title : String
-    let date : NSDate
+    let date : Date
     let image : UIImage
 }
 

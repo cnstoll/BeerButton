@@ -11,18 +11,16 @@ import ClockKit
 
 class ComplicationController: NSObject, CLKComplicationDataSource {
     
-    func getCurrentTimelineEntryForComplication(complication: CLKComplication, withHandler handler: ((CLKComplicationTimelineEntry?) -> Void)) {
+    func getCurrentTimelineEntry(for complication: CLKComplication, withHandler handler: ((CLKComplicationTimelineEntry?) -> Void)) {
         var title : String?
-        var date : NSDate?
+        var date : Date?
         
         if let order = Order.currentOrder() {
             title = order.title
-            date = order.date
+            date = order.date as Date
         }
         
-        print(title, date)
-        
-        if let orderTitle = title, orderDate = date {
+        if let orderTitle = title, let orderDate = date {
             let entry = CLKComplicationTimelineEntry()
             let template = CLKComplicationTemplateModularLargeStandardBody()
             
@@ -32,50 +30,80 @@ class ComplicationController: NSObject, CLKComplicationDataSource {
             let titleTextProvider = CLKSimpleTextProvider(text: orderTitle)
             template.body1TextProvider = titleTextProvider
             
-            let timeTextProvider = CLKRelativeDateTextProvider(date: orderDate, style: .Timer, units: .Second)
+            let timeTextProvider = CLKRelativeDateTextProvider(date: orderDate, style: .timer, units: .second)
             template.body2TextProvider = timeTextProvider
             
             entry.complicationTemplate = template
-            entry.date = NSDate()
+            entry.date = Date()
             
             handler(entry)
         } else {
-            handler(nil)
+            let entry = CLKComplicationTimelineEntry()
+            let template = CLKComplicationTemplateModularLargeStandardBody()
+            
+            let headerTextProvider = CLKSimpleTextProvider(text: "Beer Button")
+            template.headerTextProvider = headerTextProvider
+            
+            let titleTextProvider = CLKSimpleTextProvider(text: "Place Order")
+            template.body1TextProvider = titleTextProvider
+            
+            entry.complicationTemplate = template
+            entry.date = Date()
+            
+            handler(entry)
         }
     }
     
-    func getNextRequestedUpdateDateWithHandler(handler: (NSDate?) -> Void) {
+    func getNextRequestedUpdateDate(handler: (Date?) -> Void) {
         handler(nil);
     }
     
     
     // MARK: - Default Method Implementations
 
-    func getSupportedTimeTravelDirectionsForComplication(complication: CLKComplication, withHandler handler: (CLKComplicationTimeTravelDirections) -> Void) {
-        handler([.None])
+    func getSupportedTimeTravelDirections(for complication: CLKComplication, withHandler handler: (CLKComplicationTimeTravelDirections) -> Void) {
+        handler(CLKComplicationTimeTravelDirections())
     }
     
-    func getPrivacyBehaviorForComplication(complication: CLKComplication, withHandler handler: (CLKComplicationPrivacyBehavior) -> Void) {
-        handler(.ShowOnLockScreen)
+    func getPrivacyBehavior(for complication: CLKComplication, withHandler handler: (CLKComplicationPrivacyBehavior) -> Void) {
+        handler(.showOnLockScreen)
     }
     
-    func getTimelineStartDateForComplication(complication: CLKComplication, withHandler handler: (NSDate?) -> Void) {
+    func getTimelineStartDate(for complication: CLKComplication, withHandler handler: (Date?) -> Void) {
         handler(nil)
     }
     
-    func getTimelineEndDateForComplication(complication: CLKComplication, withHandler handler: (NSDate?) -> Void) {
+    func getTimelineEndDate(for complication: CLKComplication, withHandler handler: (Date?) -> Void) {
         handler(nil)
     }
     
-    func getTimelineEntriesForComplication(complication: CLKComplication, beforeDate date: NSDate, limit: Int, withHandler handler: (([CLKComplicationTimelineEntry]?) -> Void)) {
+    func getTimelineEntries(for complication: CLKComplication, before date: Date, limit: Int, withHandler handler: (([CLKComplicationTimelineEntry]?) -> Void)) {
         handler(nil)
     }
     
-    func getTimelineEntriesForComplication(complication: CLKComplication, afterDate date: NSDate, limit: Int, withHandler handler: (([CLKComplicationTimelineEntry]?) -> Void)) {
-        handler(nil)
+    func getTimelineEntries(for complication: CLKComplication, after date: Date, limit: Int, withHandler handler: (([CLKComplicationTimelineEntry]?) -> Void)) {
+        if let order = Order.currentOrder() {
+            let date = order.date as Date
+            
+            let entry = CLKComplicationTimelineEntry()
+            let template = CLKComplicationTemplateModularLargeStandardBody()
+            
+            let headerTextProvider = CLKSimpleTextProvider(text: "Beer Button")
+            template.headerTextProvider = headerTextProvider
+            
+            let titleTextProvider = CLKSimpleTextProvider(text: "Place Order")
+            template.body1TextProvider = titleTextProvider
+            
+            entry.complicationTemplate = template
+            entry.date = date
+            
+            handler([entry])
+        } else {
+            handler(nil)   
+        }
     }
     
-    func getPlaceholderTemplateForComplication(complication: CLKComplication, withHandler handler: (CLKComplicationTemplate?) -> Void) {
+    func getPlaceholderTemplate(for complication: CLKComplication, withHandler handler: (CLKComplicationTemplate?) -> Void) {
         handler(nil)
     }
     

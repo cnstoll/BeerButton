@@ -23,7 +23,7 @@ struct Beer {
             self.title = title
         }
         
-        if let image = dictionary["image"] as? NSData {
+        if let image = dictionary["image"] as? Data {
             self.image = UIImage(data: image)
         }
     }

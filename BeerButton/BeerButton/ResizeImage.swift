@@ -13,11 +13,11 @@ import UIKit
 
 extension UIImage {
     
-    public func squareImageTo(size: CGSize) -> UIImage {
+    public func squareImageTo(_ size: CGSize) -> UIImage {
         return RBResizeImage(RBSquareImage(self), targetSize: size)
     }
     
-    private func RBSquareImage(image: UIImage) -> UIImage {
+    private func RBSquareImage(_ image: UIImage) -> UIImage {
         let originalWidth  = image.size.width
         let originalHeight = image.size.height
         
@@ -31,13 +31,13 @@ extension UIImage {
         let posX = (originalWidth  - edge) / 2.0
         let posY = (originalHeight - edge) / 2.0
         
-        let cropSquare = CGRectMake(posX, posY, edge, edge)
+        let cropSquare = CGRect(x: posX, y: posY, width: edge, height: edge)
         
-        let imageRef = CGImageCreateWithImageInRect(image.CGImage, cropSquare);
-        return UIImage(CGImage: imageRef!, scale: 2.0, orientation: image.imageOrientation)
+        let imageRef = image.cgImage?.cropping(to: cropSquare);
+        return UIImage(cgImage: imageRef!, scale: 2.0, orientation: image.imageOrientation)
     }
     
-    private func RBResizeImage(image: UIImage, targetSize: CGSize) -> UIImage {
+    private func RBResizeImage(_ image: UIImage, targetSize: CGSize) -> UIImage {
         let size = image.size
         
         let widthRatio  = targetSize.width  / image.size.width
@@ -46,21 +46,21 @@ extension UIImage {
         // Figure out what our orientation is, and use that to form the rectangle
         var newSize: CGSize
         if(widthRatio > heightRatio) {
-            newSize = CGSizeMake(size.width * heightRatio, size.height * heightRatio)
+            newSize = CGSize(width: size.width * heightRatio, height: size.height * heightRatio)
         } else {
-            newSize = CGSizeMake(size.width * widthRatio,  size.height * widthRatio)
+            newSize = CGSize(width: size.width * widthRatio,  height: size.height * widthRatio)
         }
         
         // This is the rect that we've calculated out and this is what is actually used below
-        let rect = CGRectMake(0, 0, newSize.width, newSize.height)
+        let rect = CGRect(x: 0, y: 0, width: newSize.width, height: newSize.height)
         
         // Actually do the resizing to the rect using the ImageContext stuff
         UIGraphicsBeginImageContextWithOptions(newSize, false, 1.0)
-        image.drawInRect(rect)
+        image.draw(in: rect)
         let newImage = UIGraphicsGetImageFromCurrentImageContext()
         UIGraphicsEndImageContext()
         
-        return newImage
+        return newImage!
     }
 }
 

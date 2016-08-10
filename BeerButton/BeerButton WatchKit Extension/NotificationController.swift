@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import UserNotifications
 import WatchKit
 
 class NotificationController : WKUserNotificationInterfaceController {
@@ -15,19 +16,24 @@ class NotificationController : WKUserNotificationInterfaceController {
     @IBOutlet weak var timer : WKInterfaceTimer?
     @IBOutlet weak var image : WKInterfaceImage?
     
-    override func didReceiveLocalNotification(localNotification: UILocalNotification, withCompletion completionHandler: (WKUserNotificationInterfaceType) -> Void) {
-        print(localNotification.userInfo)
+    override func didReceive(_ notification: UNNotification, withCompletion completionHandler: (WKUserNotificationInterfaceType) -> Void) {
+        let request = notification.request
+        let content = request.content
+        let userInfo = content.userInfo
         
-        let payload = localNotification.userInfo as! [String : AnyObject]
-        let notification = Order.orderNotification(payload)
-        
-        self.label?.setText(notification.title)
-        
-        self.image?.setImage(notification.image)
+        if let payload = userInfo as? [String : AnyObject] {
+            let order = Order.orderNotification(payload)
+            
+            self.label?.setText(order.title)
+            
+            self.image?.setImage(order.image)
+            
+            self.timer?.setDate(order.date)
+            self.timer?.start()
+        } else {
+            completionHandler(.default)
+        }
 
-        self.timer?.setDate(notification.date)
-        self.timer?.start()
-        
-        completionHandler(.Custom)
+        completionHandler(.custom)
     }
 }

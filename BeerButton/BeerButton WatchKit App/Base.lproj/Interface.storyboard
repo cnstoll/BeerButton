@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder.WatchKit.Storyboard" version="3.0" toolsVersion="10116" systemVersion="15D21" targetRuntime="watchKit" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="AgC-eL-Hgc">
+<document type="com.apple.InterfaceBuilder.WatchKit.Storyboard" version="3.0" toolsVersion="11191" systemVersion="15G31" targetRuntime="watchKit" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="AgC-eL-Hgc">
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10085"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBWatchKitPlugin" version="10032"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="11156"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBWatchKitPlugin" version="11077"/>
     </dependencies>
     <scenes>
         <!--Interface Controller-->
@@ -20,22 +20,33 @@
                                 <group width="100" height="100" alignment="center" verticalAlignment="center" radius="50" id="St9-xz-pwt">
                                     <items>
                                         <button width="1" height="1" alignment="left" verticalAlignment="center" title="Beer" backgroundImage="button" id="gtZ-Fd-P3T">
-                                            <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                                            <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                             <connections>
                                                 <action selector="didOrderBeer:" destination="AgC-eL-Hgc" id="tHx-Wx-Qsb"/>
                                             </connections>
                                         </button>
                                     </items>
-                                    <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                                    <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 </group>
                                 <timer alignment="center" verticalAlignment="center" alpha="0.0" id="tBf-22-BZX">
                                     <calendarUnit key="units" minute="YES" second="YES"/>
                                 </timer>
                             </items>
-                            <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                            <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         </group>
+                        <label alignment="center" verticalAlignment="bottom" text="Label" id="7ad-PX-4ax"/>
                     </items>
+                    <menu key="menu" id="0rx-9b-CvO">
+                        <items>
+                            <menuItem title="Cancel Order" icon="decline" id="p8Q-cb-ooS">
+                                <connections>
+                                    <action selector="resetOrder" destination="AgC-eL-Hgc" id="IZk-rC-9p5"/>
+                                </connections>
+                            </menuItem>
+                        </items>
+                    </menu>
                     <connections>
+                        <outlet property="beerTitle" destination="7ad-PX-4ax" id="cSO-Vr-v6g"/>
                         <outlet property="button" destination="gtZ-Fd-P3T" id="2HN-Na-dBi"/>
                         <outlet property="group" destination="St9-xz-pwt" id="g0h-xz-asM"/>
                         <outlet property="picker" destination="kO9-sj-QJJ" id="9ef-Ed-anM"/>
@@ -43,42 +54,7 @@
                     </connections>
                 </controller>
             </objects>
-            <point key="canvasLocation" x="178" y="13"/>
-        </scene>
-        <!--Glance Interface Controller-->
-        <scene sceneID="rjY-Ar-IMT">
-            <objects>
-                <glanceController spacing="0.0" id="Sv0-Ai-Zie" customClass="GlanceController" customModule="BeerButton_WatchKit_App" customModuleProvider="target">
-                    <items>
-                        <group alignment="left" id="gv7-I2-MZq">
-                            <items>
-                                <label width="99" alignment="right" verticalAlignment="bottom" text="Label" textAlignment="center" id="7db-S0-xAK">
-                                    <variation key="device=watch42mm" width="122"/>
-                                </label>
-                            </items>
-                        </group>
-                        <group alignment="left" layout="vertical" id="eew-Gs-W6Y">
-                            <items>
-                                <group width="60" height="60" alignment="center" radius="30" id="aXL-DQ-NVE">
-                                    <items>
-                                        <imageView width="60" height="60" alignment="center" id="jCb-K9-8xE"/>
-                                    </items>
-                                </group>
-                                <timer alignment="center" id="7CZ-to-8bU">
-                                    <calendarUnit key="units" minute="YES" second="YES"/>
-                                </timer>
-                            </items>
-                        </group>
-                    </items>
-                    <edgeInsets key="margins" left="0.0" right="0.0" top="0.0" bottom="14"/>
-                    <connections>
-                        <outlet property="image" destination="jCb-K9-8xE" id="QRK-K7-0Vc"/>
-                        <outlet property="label" destination="7db-S0-xAK" id="GBY-Xh-MtS"/>
-                        <outlet property="timer" destination="7CZ-to-8bU" id="C6m-6o-Z9k"/>
-                    </connections>
-                </glanceController>
-            </objects>
-            <point key="canvasLocation" x="178" y="317"/>
+            <point key="canvasLocation" x="178" y="312"/>
         </scene>
         <!--Static Notification Interface Controller-->
         <scene sceneID="58z-EB-h36">
