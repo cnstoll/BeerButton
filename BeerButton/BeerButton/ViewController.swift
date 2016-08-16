@@ -57,8 +57,8 @@ class ViewController: UITableViewController, UINavigationControllerDelegate, UII
         tableView.reloadData()
     }
     
-    func arrayOfBeerDictionaries() -> [[String : AnyObject]] {
-        var array : [[String : AnyObject]] = []
+    func arrayOfBeerDictionaries() -> [[String : Any]] {
+        var array : [[String : Any]] = []
         
         for item in beers {
             array.append(item.toDictionary())
@@ -114,7 +114,7 @@ class ViewController: UITableViewController, UINavigationControllerDelegate, UII
     
     // Image Methods
     
-    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : AnyObject]) {
+    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : Any]) {
         self.pickedImage = info[UIImagePickerControllerOriginalImage] as? UIImage
         
         self.dismiss(animated: true, completion: {

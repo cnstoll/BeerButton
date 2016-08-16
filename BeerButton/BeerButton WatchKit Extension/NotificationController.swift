@@ -16,23 +16,19 @@ class NotificationController : WKUserNotificationInterfaceController {
     @IBOutlet weak var timer : WKInterfaceTimer?
     @IBOutlet weak var image : WKInterfaceImage?
     
-    override func didReceive(_ notification: UNNotification, withCompletion completionHandler: (WKUserNotificationInterfaceType) -> Void) {
+    public func didReceive(_ notification: UNNotification, withCompletion completionHandler: (WKUserNotificationInterfaceType) -> Void) {
         let request = notification.request
         let content = request.content
         let userInfo = content.userInfo
         
-        if let payload = userInfo as? [String : AnyObject] {
-            let order = Order.orderNotification(payload)
-            
-            self.label?.setText(order.title)
-            
-            self.image?.setImage(order.image)
-            
-            self.timer?.setDate(order.date)
-            self.timer?.start()
-        } else {
-            completionHandler(.default)
-        }
+        let order = Order.orderNotification(userInfo)
+        
+        self.label?.setText(order.title)
+        
+        self.image?.setImage(order.image)
+        
+        self.timer?.setDate(order.date)
+        self.timer?.start()
 
         completionHandler(.custom)
     }

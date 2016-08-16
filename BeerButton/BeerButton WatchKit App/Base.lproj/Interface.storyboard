@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder.WatchKit.Storyboard" version="3.0" toolsVersion="11191" systemVersion="15G31" targetRuntime="watchKit" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="AgC-eL-Hgc">
+<document type="com.apple.InterfaceBuilder.WatchKit.Storyboard" version="3.0" toolsVersion="11198.2" systemVersion="15G31" targetRuntime="watchKit" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="AgC-eL-Hgc">
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="11156"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="11161"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBWatchKitPlugin" version="11077"/>
     </dependencies>
     <scenes>
@@ -10,10 +10,7 @@
             <objects>
                 <notificationController id="SqV-ik-NNk">
                     <items>
-                        <label alignment="left" text="Your order" id="j0S-z3-CD4"/>
-                        <label alignment="left" text="static" id="XB8-Oh-Fdm"/>
-                        <timer alignment="left" id="jtY-IC-ne5"/>
-                        <imageView width="60" height="60" alignment="left" id="r14-5w-jE7"/>
+                        <label alignment="left" text="Your beer is being delivered!" numberOfLines="0" id="j0S-z3-CD4"/>
                     </items>
                     <notificationCategory key="notificationCategory" identifier="BeerButtonOrderDelivery" id="EVc-1X-o6n"/>
                     <connections>
@@ -29,7 +26,7 @@
             <objects>
                 <controller id="AgC-eL-Hgc" customClass="InterfaceController" customModule="BeerButton_WatchKit_App" customModuleProvider="target">
                     <items>
-                        <picker height="2" alignment="left" style="stack" id="VNU-FE-6TX">
+                        <picker height="2" alignment="left" id="VNU-FE-6TX">
                             <connections>
                                 <action selector="pickerDidChange:" destination="AgC-eL-Hgc" id="FZc-Dc-xpW"/>
                             </connections>

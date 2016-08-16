@@ -30,8 +30,8 @@ class InterfaceController: WKInterfaceController, WCSessionDelegate {
     var session : WCSession?
     
     var secondTimer : Timer?
-    
-    override func awake(withContext context: AnyObject?) {
+
+    override func awake(withContext context: Any?) {
         super.awake(withContext: context)
         
         let session = WCSession.default()
@@ -119,7 +119,7 @@ class InterfaceController: WKInterfaceController, WCSessionDelegate {
     }
     
     @IBAction func didOrderBeer(_ sender : WKInterfaceButton) {
-        let date = Date(timeIntervalSinceNow: 25 * 60)
+        let date = Date(timeIntervalSinceNow: 30)
         
         if let beer = self.currentBeer {
             let order = Order(beer: beer, deliveryDate: date)
@@ -155,13 +155,16 @@ class InterfaceController: WKInterfaceController, WCSessionDelegate {
             self.group?.setHeight(size)
             self.group?.setWidth(size)
             self.group?.setCornerRadius(size / 2)
-            
+
             self.button?.setAlpha(0)
             self.beerTimer?.setAlpha(1)
             self.beerTitle?.setAlpha(1)
             
             self.button?.setTitle("")
             self.beerTitle?.setText(order.title)
+            
+            let beer = Beer(dictionary: order.beerDictionary)
+            self.group?.setBackgroundImage(beer.image)
         } else {
             self.group?.setHorizontalAlignment(.center)
             self.group?.setVerticalAlignment(.center)
@@ -221,7 +224,7 @@ class InterfaceController: WKInterfaceController, WCSessionDelegate {
     
     // Notification Methods
     
-    func notifyUser(_ message : [String : AnyObject]) {
+    func notifyUser(_ message : [String : Any]) {
         let orderInfo = Order.orderNotification(message)
         
         let content = UNMutableNotificationContent()
@@ -230,7 +233,7 @@ class InterfaceController: WKInterfaceController, WCSessionDelegate {
         content.userInfo = message
         content.categoryIdentifier = "BeerButtonOrderDelivery"
         
-        let time = orderInfo.date.timeIntervalSinceNow - 20
+        let time = orderInfo.date.timeIntervalSinceNow - 10
         let trigger = UNTimeIntervalNotificationTrigger(timeInterval: time, repeats: false)
         
         let request = UNNotificationRequest(identifier: "Delivery", content: content, trigger: trigger)
@@ -242,7 +245,7 @@ class InterfaceController: WKInterfaceController, WCSessionDelegate {
     
     // WatchConnectivity Methods
     
-    func session(_ session: WCSession, didReceiveApplicationContext applicationContext: [String : AnyObject]) {
+    func session(_ session: WCSession, didReceiveApplicationContext applicationContext: [String : Any]) {
         if let array = applicationContext["beers"] as? [[String : AnyObject]] {
             beers.removeAll()
             
@@ -275,8 +278,8 @@ class InterfaceController: WKInterfaceController, WCSessionDelegate {
         }
     }
     
-    func arrayOfBeerDictionaries() -> [[String : AnyObject]] {
-        var array : [[String : AnyObject]] = []
+    func arrayOfBeerDictionaries() -> [[String : Any]] {
+        var array : [[String : Any]] = []
         
         for item in beers {
             array.append(item.toDictionary())

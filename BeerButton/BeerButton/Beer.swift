@@ -18,7 +18,7 @@ struct Beer {
         self.image = image
     }
     
-    init(dictionary: [String : AnyObject]) {
+    init(dictionary: [String : Any]) {
         if let title = dictionary["title"] as? String {
             self.title = title
         }
@@ -28,8 +28,8 @@ struct Beer {
         }
     }
     
-    func toDictionary() -> [String : AnyObject] {
-        return ["title" : title, "image" : UIImagePNGRepresentation(image!)!]
+    func toDictionary() -> [String : Any] {
+        return ["title" : title as AnyObject, "image" : UIImagePNGRepresentation(image!)!]
     }
 }
 

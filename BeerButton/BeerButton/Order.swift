@@ -12,7 +12,7 @@ import UIKit
 struct Order {
     var title = ""
     var date : Date
-    var beerDictionary : [String : AnyObject]
+    var beerDictionary : [String : Any]
     
     init(beer : Beer, deliveryDate : Date) {
         self.title = beer.title
@@ -61,17 +61,18 @@ struct Order {
         defaults.set(nil, forKey: "order")
     }
     
-    static func orderNotificationDictionary(_ notification : OrderNotification) -> [String : AnyObject] {
+    static func orderNotificationDictionary(_ notification : OrderNotification) -> [String : Any] {
         let alert = ["body" : notification.title]
-        let aps = ["alert" : alert, "category" : "BeerButtonOrderDelivery"]
+        let aps : [String : Any] = ["alert" : alert, "category" : "BeerButtonOrderDelivery"]
         
-        let dictionary = ["aps" : aps, "deliveryDate" : notification.date, "beerImage" : UIImagePNGRepresentation(notification.image)!]
+        let dictionary = ["aps" : aps, "deliveryDate" : notification.date, "beerImage" : UIImagePNGRepresentation(notification.image)!] as [String : Any]
         
         return dictionary
     }
     
-    static func orderNotification(_ dictionary : [String : AnyObject]) -> OrderNotification {
-        let title = dictionary["aps"]!["alert"]!!["body"]! as! String
+    static func orderNotification(_ dictionary : [AnyHashable : Any]) -> OrderNotification {
+        let aps = dictionary["aps"] as! [String : AnyObject]
+        let title = aps["alert"]!["body"]! as! String
         let date = dictionary["deliveryDate"]! as! Date
         let image = UIImage(data: dictionary["beerImage"]! as! Data)!
 
