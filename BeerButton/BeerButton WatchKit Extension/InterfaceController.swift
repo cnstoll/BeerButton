@@ -17,7 +17,7 @@ enum OrderStatus {
     case Ordered(Order, snapshot : Bool)
 }
 
-class InterfaceController: WKInterfaceController, WCSessionDelegate {
+class InterfaceController: WKInterfaceController, WCSessionDelegate, WKCrownDelegate {
     
     @IBOutlet weak var group : WKInterfaceGroup?
     @IBOutlet weak var picker : WKInterfacePicker?
@@ -28,6 +28,7 @@ class InterfaceController: WKInterfaceController, WCSessionDelegate {
     var beers : [Beer] = []
     var currentBeer : Beer?
     var session : WCSession?
+    var delivery : TimeInterval = 60
     
     var secondTimer : Timer?
 
@@ -50,6 +51,8 @@ class InterfaceController: WKInterfaceController, WCSessionDelegate {
         restoreCachedBeers()
         updateComplication()
         updatePickerItems()
+        
+        self.crownSequencer.delegate = self
     }
     
     // Lifecycle Methods
@@ -109,9 +112,20 @@ class InterfaceController: WKInterfaceController, WCSessionDelegate {
         self.button?.setTitle(beer.title)
     }
     
+    @IBAction func focusBeerPicker(gesture : WKTapGestureRecognizer) {
+        self.picker?.focus()
+    }
+    
+    @IBAction func focusDatePicker(gesture : WKTapGestureRecognizer) {
+        self.crownSequencer.focus()
+    }
+    
     // Order Methods
     
     @IBAction func resetOrder() {
+        self.secondTimer?.invalidate()
+        self.secondTimer = nil
+        
         Order.clearOrder()
         configureUI(status: .None)
         updateComplication()
@@ -119,7 +133,7 @@ class InterfaceController: WKInterfaceController, WCSessionDelegate {
     }
     
     @IBAction func didOrderBeer(_ sender : WKInterfaceButton) {
-        let date = Date(timeIntervalSinceNow: 30)
+        let date = Date(timeIntervalSinceNow: delivery)
         
         if let beer = self.currentBeer {
             let order = Order(beer: beer, deliveryDate: date)
@@ -157,7 +171,6 @@ class InterfaceController: WKInterfaceController, WCSessionDelegate {
             self.group?.setCornerRadius(size / 2)
 
             self.button?.setAlpha(0)
-            self.beerTimer?.setAlpha(1)
             self.beerTitle?.setAlpha(1)
             
             self.button?.setTitle("")
@@ -178,8 +191,9 @@ class InterfaceController: WKInterfaceController, WCSessionDelegate {
             self.group?.setCornerRadius(50)
             
             self.button?.setAlpha(1)
-            self.beerTimer?.setAlpha(0)
             self.beerTitle?.setAlpha(0)
+            
+            self.updateBeerTimer(withTimeInterval: delivery)
         }
     }
     
@@ -198,14 +212,18 @@ class InterfaceController: WKInterfaceController, WCSessionDelegate {
                 self.secondTimer = nil
             }
             
-            let formatter = DateComponentsFormatter()
-            formatter.allowedUnits = [.minute, .second, .nanosecond]
-            formatter.unitsStyle = .positional
-            formatter.zeroFormattingBehavior = .pad
-            
-            let time = formatter.string(from: remainingTime)
-            self.beerTimer?.setText(time)
+            self.updateBeerTimer(withTimeInterval: remainingTime)
         })
+    }
+    
+    func updateBeerTimer(withTimeInterval timeInterval: TimeInterval) {
+        let formatter = DateComponentsFormatter()
+        formatter.allowedUnits = [.minute, .second, .nanosecond]
+        formatter.unitsStyle = .positional
+        formatter.zeroFormattingBehavior = .pad
+        
+        let time = formatter.string(from: timeInterval)
+        self.beerTimer?.setText(time)
     }
     
     func scheduleSnapshotRefresh(forDate date: Date) {
@@ -261,6 +279,42 @@ class InterfaceController: WKInterfaceController, WCSessionDelegate {
     
     public func session(_ session: WCSession, activationDidCompleteWith activationState: WCSessionActivationState, error: Error?) {
         
+    }
+    
+    // Crown Sequencer Methods
+    
+    func crownDidRotate(_ crownSequencer: WKCrownSequencer?, rotationalDelta: Double) {
+        guard Order.currentOrder() == nil else {
+            return
+        }
+        
+        var delta = 1.0
+        
+        if let rps = crownSequencer?.rotationsPerSecond {
+            if rps > 1.0 {
+                delta = 5.0
+            }
+        }
+        
+        var newDelivery = delivery
+        
+        if rotationalDelta < 0 {
+            newDelivery = delivery - delta
+        } else if rotationalDelta > 0 {
+            newDelivery = delivery + delta
+        }
+        
+        if newDelivery > 0 {
+            if delta > 1 {
+                newDelivery = newDelivery - newDelivery.truncatingRemainder(dividingBy: delta)
+            }
+            
+            delivery = newDelivery
+        } else {
+            delivery = 0
+        }
+        
+        self.updateBeerTimer(withTimeInterval: delivery)
     }
     
     // Beer Model Methods

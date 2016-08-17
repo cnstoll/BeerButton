@@ -26,22 +26,52 @@
             <objects>
                 <controller id="AgC-eL-Hgc" customClass="InterfaceController" customModule="BeerButton_WatchKit_App" customModuleProvider="target">
                     <items>
-                        <picker height="2" alignment="left" id="VNU-FE-6TX">
-                            <connections>
-                                <action selector="pickerDidChange:" destination="AgC-eL-Hgc" id="FZc-Dc-xpW"/>
-                            </connections>
-                        </picker>
-                        <group width="100" height="100" alignment="center" verticalAlignment="center" layout="vertical" id="ki8-Oh-l5k">
+                        <group width="1" alignment="left" layout="vertical" id="MAo-vh-v2Q">
                             <items>
-                                <button width="100" height="100" alignment="center" verticalAlignment="center" title="Button" backgroundImage="button" id="rIA-Q4-nLN">
+                                <picker height="2" alignment="left" id="VNU-FE-6TX">
                                     <connections>
-                                        <action selector="didOrderBeer:" destination="AgC-eL-Hgc" id="3Y2-eq-YrR"/>
+                                        <action selector="pickerDidChange:" destination="AgC-eL-Hgc" id="FZc-Dc-xpW"/>
                                     </connections>
-                                </button>
+                                </picker>
+                                <group width="1" height="100" alignment="center" verticalAlignment="center" layout="vertical" id="ki8-Oh-l5k">
+                                    <items>
+                                        <button width="100" height="100" alignment="center" verticalAlignment="center" title="Button" backgroundImage="button" id="rIA-Q4-nLN">
+                                            <connections>
+                                                <action selector="didOrderBeer:" destination="AgC-eL-Hgc" id="3Y2-eq-YrR"/>
+                                            </connections>
+                                        </button>
+                                    </items>
+                                </group>
                             </items>
+                            <gestureRecognizers>
+                                <tapGestureRecognizer id="WKf-L3-OYy">
+                                    <connections>
+                                        <action selector="focusBeerPickerWithGesture:" destination="AgC-eL-Hgc" id="ZxY-4w-6Cn"/>
+                                    </connections>
+                                </tapGestureRecognizer>
+                            </gestureRecognizers>
                         </group>
-                        <label alignment="left" verticalAlignment="bottom" text="Label" id="cmg-0c-PDP"/>
-                        <label alignment="left" verticalAlignment="bottom" text="Label" id="y1j-qh-w4n"/>
+                        <group width="1" alignment="left" layout="vertical" id="Dto-On-xyY">
+                            <items>
+                                <label alignment="left" verticalAlignment="bottom" text="Label" id="cmg-0c-PDP"/>
+                                <label alignment="center" verticalAlignment="bottom" text="Label" id="y1j-qh-w4n">
+                                    <gestureRecognizers>
+                                        <tapGestureRecognizer id="jF8-GZ-UrE">
+                                            <connections>
+                                                <action selector="focusDatePickerWithGesture:" destination="AgC-eL-Hgc" id="8Ue-lA-cKL"/>
+                                            </connections>
+                                        </tapGestureRecognizer>
+                                    </gestureRecognizers>
+                                </label>
+                            </items>
+                            <gestureRecognizers>
+                                <tapGestureRecognizer id="aRr-tn-pH0">
+                                    <connections>
+                                        <action selector="focusDatePickerWithGesture:" destination="AgC-eL-Hgc" id="BxD-gc-UNu"/>
+                                    </connections>
+                                </tapGestureRecognizer>
+                            </gestureRecognizers>
+                        </group>
                     </items>
                     <menu key="menu" id="0rx-9b-CvO">
                         <items>
