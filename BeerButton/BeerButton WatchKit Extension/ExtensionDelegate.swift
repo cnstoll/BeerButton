@@ -13,10 +13,10 @@ import WatchKit
 class ExtensionDelegate: NSObject, WKExtensionDelegate, UNUserNotificationCenterDelegate {
 
     func applicationDidFinishLaunching() {
-        setNotificationPreferences()
     }
 
     func applicationDidBecomeActive() {
+        setNotificationPreferences()
         deemphasizeOrder()
     }
 
@@ -90,18 +90,24 @@ class ExtensionDelegate: NSObject, WKExtensionDelegate, UNUserNotificationCenter
     
     func setNotificationPreferences() {
         let center = UNUserNotificationCenter.current()
-        center.requestAuthorization(options: [.alert]) { (granted, error) in }
-        
-        let action = UNNotificationAction(identifier: "OrderDelivery", title: "Your Beer", options: .foreground)
-        let category = UNNotificationCategory(identifier: "BeerButtonOrderDelivery", actions: [action], intentIdentifiers: [], options: [.allowInCarPlay, .customDismissAction])
-        
-        center.delegate = self
-        center.setNotificationCategories([category])
+        center.requestAuthorization(options: [.alert, .sound]) { (granted, error) in
+            if granted {
+                center.delegate = self
+                let category = UNNotificationCategory(identifier: "BeerButtonOrderDelivery", actions: [], intentIdentifiers: [], options: [])
+                center.setNotificationCategories(Set([category]))
+            } else {
+                print("No Permissions" + error.debugDescription)
+            }
+        }
     }
     
     /// MARK - UNUserNotificationCenterDelegate Methods
     
     func userNotificationCenter(_ center: UNUserNotificationCenter, willPresent notification: UNNotification, withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Swift.Void) {
-        completionHandler(.alert)
+        completionHandler([.alert, .sound])
+        
+        center.getNotificationCategories { (categories) in
+            print(categories)
+        }
     }
 }

@@ -16,7 +16,13 @@ class NotificationController : WKUserNotificationInterfaceController {
     @IBOutlet weak var timer : WKInterfaceTimer?
     @IBOutlet weak var image : WKInterfaceImage?
     
-    public func didReceive(_ notification: UNNotification, withCompletion completionHandler: (WKUserNotificationInterfaceType) -> Void) {
+    override init() {
+        super.init()
+    }
+    
+    override func didReceive(_ notification: UNNotification, withCompletion completionHandler: @escaping (WKUserNotificationInterfaceType) -> Swift.Void) {
+        print("RECEIVED NOTIFICATION")
+        
         let request = notification.request
         let content = request.content
         let userInfo = content.userInfo
@@ -29,7 +35,7 @@ class NotificationController : WKUserNotificationInterfaceController {
         
         self.timer?.setDate(order.date)
         self.timer?.start()
-
+        
         completionHandler(.custom)
     }
 }

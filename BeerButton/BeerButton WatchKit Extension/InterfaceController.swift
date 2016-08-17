@@ -32,6 +32,8 @@ class InterfaceController: WKInterfaceController, WCSessionDelegate, WKCrownDele
     
     var secondTimer : Timer?
     var snapshot : Bool = false
+    
+    var request : UNNotificationRequest?
 
     override func awake(withContext context: Any?) {
         super.awake(withContext: context)
@@ -256,22 +258,29 @@ class InterfaceController: WKInterfaceController, WCSessionDelegate, WKCrownDele
     // Notification Methods
     
     func notifyUser(_ message : [String : Any]) {
+//        WCSession.default().sendMessage(message, replyHandler: nil, errorHandler: nil)
+//        
+//        return
+//        
         let orderInfo = Order.orderNotification(message)
         
         let content = UNMutableNotificationContent()
-        content.body = orderInfo.title
         content.title = "Beer Delivery"
+        content.body = orderInfo.title
         content.userInfo = message
+        content.sound = UNNotificationSound.default()
         content.categoryIdentifier = "BeerButtonOrderDelivery"
         
-        let time = orderInfo.date.timeIntervalSinceNow - 10
-        let trigger = UNTimeIntervalNotificationTrigger(timeInterval: time, repeats: false)
+        let time = orderInfo.date.timeIntervalSinceNow - 10.0
+        let trigger = UNTimeIntervalNotificationTrigger(timeInterval: 1.0, repeats: false)
         
-        let request = UNNotificationRequest(identifier: "Delivery", content: content, trigger: trigger)
+        let request = UNNotificationRequest(identifier: "order", content: content, trigger: trigger)
         let center = UNUserNotificationCenter.current()
 
+        self.request = request
+        
         // Disabled due to Xcode 8 Beta 5 Simulator Bug
-        center.add(request, withCompletionHandler: nil)
+        center.add(request)
     }
     
     // WatchConnectivity Methods
