@@ -31,6 +31,7 @@ class InterfaceController: WKInterfaceController, WCSessionDelegate, WKCrownDele
     var delivery : TimeInterval = 60
     
     var secondTimer : Timer?
+    var snapshot : Bool = false
 
     override func awake(withContext context: Any?) {
         super.awake(withContext: context)
@@ -157,7 +158,7 @@ class InterfaceController: WKInterfaceController, WCSessionDelegate, WKCrownDele
     
     func configureUI(status: OrderStatus) {
         if case .Ordered(let order, let snapshot) = status {
-            let size : CGFloat = snapshot ? 80 : 40
+            let size : CGFloat = 40
             
             self.group?.setHorizontalAlignment(.left)
             self.group?.setVerticalAlignment(.top)
@@ -178,6 +179,8 @@ class InterfaceController: WKInterfaceController, WCSessionDelegate, WKCrownDele
             
             let beer = Beer(dictionary: order.beerDictionary)
             self.group?.setBackgroundImage(beer.image)
+            
+            self.snapshot = snapshot
         } else {
             self.group?.setHorizontalAlignment(.center)
             self.group?.setVerticalAlignment(.center)
@@ -193,6 +196,7 @@ class InterfaceController: WKInterfaceController, WCSessionDelegate, WKCrownDele
             self.button?.setAlpha(1)
             self.beerTitle?.setAlpha(0)
             
+            self.snapshot = false
             self.updateBeerTimer(withTimeInterval: delivery)
         }
     }
@@ -210,9 +214,9 @@ class InterfaceController: WKInterfaceController, WCSessionDelegate, WKCrownDele
                 self.resetOrder()
                 self.secondTimer?.invalidate()
                 self.secondTimer = nil
+            } else {
+                self.updateBeerTimer(withTimeInterval: remainingTime)
             }
-            
-            self.updateBeerTimer(withTimeInterval: remainingTime)
         })
     }
     
@@ -222,8 +226,17 @@ class InterfaceController: WKInterfaceController, WCSessionDelegate, WKCrownDele
         formatter.unitsStyle = .positional
         formatter.zeroFormattingBehavior = .pad
         
-        let time = formatter.string(from: timeInterval)
-        self.beerTimer?.setText(time)
+        guard let time = formatter.string(from: timeInterval) else {
+            return
+        }
+
+        if snapshot {
+            let largerTime = NSMutableAttributedString(string: time)
+            largerTime.addAttribute(NSFontAttributeName, value: UIFont.systemFont(ofSize: 48), range: NSMakeRange(0, time.characters.count))
+            self.beerTimer?.setAttributedText(largerTime)
+        } else {
+            self.beerTimer?.setText(time)
+        }
     }
     
     func scheduleSnapshotRefresh(forDate date: Date) {
