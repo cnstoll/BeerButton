@@ -28,7 +28,7 @@ class InterfaceController: WKInterfaceController, WCSessionDelegate, WKCrownDele
     var beers : [Beer] = []
     var currentBeer : Beer?
     var session : WCSession?
-    var delivery : TimeInterval = 60
+    var delivery : TimeInterval = 60 * 5
     
     var secondTimer : Timer?
     var snapshot : Bool = false
@@ -99,20 +99,12 @@ class InterfaceController: WKInterfaceController, WCSessionDelegate, WKCrownDele
         self.picker?.setItems(items)
 
         if (items.count > 0) {
-            pickerDidChange(0)
+            configureOrderingUI(withIndex: 0)
         }
     }
     
     @IBAction func pickerDidChange(_ index : Int) {
-        guard Order.currentOrder() == nil else {
-            return
-        }
-        
-        let beer = beers[index]
-        currentBeer = beer
-    
-        self.group?.setBackgroundImage(beer.image)
-        self.button?.setTitle(beer.title)
+        configureOrderingUI(withIndex: index)
     }
     
     @IBAction func focusBeerPicker(gesture : WKTapGestureRecognizer) {
@@ -121,6 +113,42 @@ class InterfaceController: WKInterfaceController, WCSessionDelegate, WKCrownDele
     
     @IBAction func focusDatePicker(gesture : WKTapGestureRecognizer) {
         self.crownSequencer.focus()
+    }
+    
+    // Crown Sequencer Methods
+    
+    func crownDidRotate(_ crownSequencer: WKCrownSequencer?, rotationalDelta: Double) {
+        guard Order.currentOrder() == nil else {
+            return
+        }
+        
+        var delta = 1.0
+        
+        if let rps = crownSequencer?.rotationsPerSecond {
+            if rps > 1.0 {
+                delta = 5.0
+            }
+        }
+        
+        var newDelivery = delivery
+        
+        if rotationalDelta < 0 {
+            newDelivery = delivery - delta
+        } else if rotationalDelta > 0 {
+            newDelivery = delivery + delta
+        }
+        
+        if newDelivery > 0 {
+            if delta > 1 {
+                newDelivery = newDelivery - newDelivery.truncatingRemainder(dividingBy: delta)
+            }
+            
+            delivery = newDelivery
+        } else {
+            delivery = 0
+        }
+        
+        self.updateBeerTimer(withTimeInterval: delivery)
     }
     
     // Order Methods
@@ -207,6 +235,18 @@ class InterfaceController: WKInterfaceController, WCSessionDelegate, WKCrownDele
         }
     }
     
+    func configureOrderingUI(withIndex index: Int) {
+        guard Order.currentOrder() == nil else {
+            return
+        }
+        
+        let beer = beers[index]
+        currentBeer = beer
+        
+        self.group?.setBackgroundImage(beer.image)
+        self.button?.setTitle(beer.title)
+    }
+    
     func startTimer(forOrder order: Order) {
         self.secondTimer?.invalidate()
         self.secondTimer = nil
@@ -272,7 +312,7 @@ class InterfaceController: WKInterfaceController, WCSessionDelegate, WKCrownDele
         content.categoryIdentifier = "BeerButtonOrderDelivery"
         content.subtitle = "subtitle"
         
-        let time = orderInfo.date.timeIntervalSinceNow - 10.0
+        let time = orderInfo.date.timeIntervalSinceNow - 20.0
         let trigger = UNTimeIntervalNotificationTrigger(timeInterval: time, repeats: false)
         
         let identifier = self.stringWithUUID()
@@ -314,42 +354,6 @@ class InterfaceController: WKInterfaceController, WCSessionDelegate, WKCrownDele
     
     public func session(_ session: WCSession, activationDidCompleteWith activationState: WCSessionActivationState, error: Error?) {
         
-    }
-    
-    // Crown Sequencer Methods
-    
-    func crownDidRotate(_ crownSequencer: WKCrownSequencer?, rotationalDelta: Double) {
-        guard Order.currentOrder() == nil else {
-            return
-        }
-        
-        var delta = 1.0
-        
-        if let rps = crownSequencer?.rotationsPerSecond {
-            if rps > 1.0 {
-                delta = 5.0
-            }
-        }
-        
-        var newDelivery = delivery
-        
-        if rotationalDelta < 0 {
-            newDelivery = delivery - delta
-        } else if rotationalDelta > 0 {
-            newDelivery = delivery + delta
-        }
-        
-        if newDelivery > 0 {
-            if delta > 1 {
-                newDelivery = newDelivery - newDelivery.truncatingRemainder(dividingBy: delta)
-            }
-            
-            delivery = newDelivery
-        } else {
-            delivery = 0
-        }
-        
-        self.updateBeerTimer(withTimeInterval: delivery)
     }
     
     // Beer Model Methods
