@@ -35,12 +35,13 @@ class ViewController: UITableViewController, UINavigationControllerDelegate, UII
         let session = WCSession.default()
         session.delegate = self
         session.activate()
+        
+        setNotificationPreferences()
     }
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         
-        setNotificationPreferences()
         updateWatchBeers()
     }
 
@@ -48,18 +49,6 @@ class ViewController: UITableViewController, UINavigationControllerDelegate, UII
         let imagePicker = UIImagePickerController()
         imagePicker.delegate = self
         self.present(imagePicker, animated: true, completion: nil)
-    }
-    
-    func setNotificationPreferences() {
-        let center = UNUserNotificationCenter.current()
-        center.requestAuthorization(options: [.alert, .sound]) { (granted, error) in
-            if granted {
-                let category = UNNotificationCategory(identifier: "BeerButtonOrderDelivery", actions: [], intentIdentifiers: [], options: [])
-                center.setNotificationCategories(Set([category]))
-            } else {
-                print("No Permissions" + error.debugDescription)
-            }
-        }
     }
     
     func finishAddingBeer() {
@@ -117,25 +106,7 @@ class ViewController: UITableViewController, UINavigationControllerDelegate, UII
     }
     
     func session(_ session: WCSession, didReceiveMessage message: [String : Any]) {
-        let orderInfo = Order.orderNotification(message)
-        
-        let content = UNMutableNotificationContent()
-        content.title = "Beer Delivery"
-        content.body = orderInfo.title
-        content.userInfo = message
-        content.sound = UNNotificationSound.default()
-        content.categoryIdentifier = "BeerButtonOrderDelivery"
-        
-        let time = orderInfo.date.timeIntervalSinceNow - 10.0
-        let trigger = UNTimeIntervalNotificationTrigger(timeInterval: time, repeats: false)
-        
-        let request = UNNotificationRequest(identifier: "BeerButtonOrderDelivery", content: content, trigger: trigger)
-        let center = UNUserNotificationCenter.current()
-        
-        // Disabled due to Xcode 8 Beta 5 Simulator Bug
-        center.add(request, withCompletionHandler: { error in
-            
-        })
+
     }
     
     public func session(_ session: WCSession, activationDidCompleteWith activationState: WCSessionActivationState, error: Error?) {
@@ -195,6 +166,20 @@ class ViewController: UITableViewController, UINavigationControllerDelegate, UII
         }
         
         return cell
+    }
+    
+    // Notification Methods
+    
+    func setNotificationPreferences() {
+        let center = UNUserNotificationCenter.current()
+        center.requestAuthorization(options: [.alert, .sound]) { (granted, error) in
+            if granted {
+                let category = UNNotificationCategory(identifier: "BeerButtonOrderDelivery", actions: [], intentIdentifiers: [], options: [])
+                center.setNotificationCategories(Set([category]))
+            } else {
+                print("No Permissions" + error.debugDescription)
+            }
+        }
     }
 }
 

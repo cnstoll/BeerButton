@@ -33,7 +33,7 @@ class InterfaceController: WKInterfaceController, WCSessionDelegate, WKCrownDele
     var secondTimer : Timer?
     var snapshot : Bool = false
     
-    var request : UNNotificationRequest?
+    var identifier : String?
 
     override func awake(withContext context: Any?) {
         super.awake(withContext: context)
@@ -133,6 +133,10 @@ class InterfaceController: WKInterfaceController, WCSessionDelegate, WKCrownDele
         configureUI(status: .None)
         updateComplication()
         updatePickerItems()
+        
+        let center = UNUserNotificationCenter.current()
+        center.removeAllDeliveredNotifications()
+        center.removeAllPendingNotificationRequests()
     }
     
     @IBAction func didOrderBeer(_ sender : WKInterfaceButton) {
@@ -258,10 +262,6 @@ class InterfaceController: WKInterfaceController, WCSessionDelegate, WKCrownDele
     // Notification Methods
     
     func notifyUser(_ message : [String : Any]) {
-//        WCSession.default().sendMessage(message, replyHandler: nil, errorHandler: nil)
-//        
-//        return
-//        
         let orderInfo = Order.orderNotification(message)
         
         let content = UNMutableNotificationContent()
@@ -270,18 +270,31 @@ class InterfaceController: WKInterfaceController, WCSessionDelegate, WKCrownDele
         content.userInfo = message
         content.sound = UNNotificationSound.default()
         content.categoryIdentifier = "BeerButtonOrderDelivery"
+        content.subtitle = "subtitle"
         
         let time = orderInfo.date.timeIntervalSinceNow - 10.0
-        let trigger = UNTimeIntervalNotificationTrigger(timeInterval: 1.0, repeats: false)
+        let trigger = UNTimeIntervalNotificationTrigger(timeInterval: time, repeats: false)
         
-        let request = UNNotificationRequest(identifier: "order", content: content, trigger: trigger)
+        let identifier = self.stringWithUUID()
+
+        let request = UNNotificationRequest(identifier: identifier, content: content, trigger: trigger)
         let center = UNUserNotificationCenter.current()
 
-        self.request = request
+        self.identifier = identifier
+        
+        center.removeAllDeliveredNotifications()
+        center.removeAllPendingNotificationRequests()
         
         // Disabled due to Xcode 8 Beta 5 Simulator Bug
         center.add(request)
     }
+    
+    // https://forums.developer.apple.com/message/149257
+    func stringWithUUID() -> String {
+        let uuidObj = CFUUIDCreate(nil)
+        let uuidString = CFUUIDCreateString(nil, uuidObj)!
+        return uuidString as String
+    }  
     
     // WatchConnectivity Methods
     

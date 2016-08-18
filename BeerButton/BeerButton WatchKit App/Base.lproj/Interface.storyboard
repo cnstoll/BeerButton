@@ -98,7 +98,7 @@
             <objects>
                 <controller id="IlX-Le-t26" customClass="NotificationController" customModule="BeerButton_WatchKit_Extension">
                     <items>
-                        <label height="43.5" alignment="left" text="Your porter will be delivered in" numberOfLines="2" id="CI8-Gq-Spg"/>
+                        <label alignment="left" text="Your porter will be delivered in" numberOfLines="2" id="CI8-Gq-Spg"/>
                         <timer alignment="left" id="biU-TS-HL7"/>
                         <imageView width="60" height="60" alignment="left" id="yGg-GO-FD8"/>
                     </items>

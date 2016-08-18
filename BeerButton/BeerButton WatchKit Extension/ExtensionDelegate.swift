@@ -92,9 +92,9 @@ class ExtensionDelegate: NSObject, WKExtensionDelegate, UNUserNotificationCenter
         let center = UNUserNotificationCenter.current()
         center.requestAuthorization(options: [.alert, .sound]) { (granted, error) in
             if granted {
-                center.delegate = self
                 let category = UNNotificationCategory(identifier: "BeerButtonOrderDelivery", actions: [], intentIdentifiers: [], options: [])
                 center.setNotificationCategories(Set([category]))
+                center.delegate = self
             } else {
                 print("No Permissions" + error.debugDescription)
             }
@@ -105,9 +105,5 @@ class ExtensionDelegate: NSObject, WKExtensionDelegate, UNUserNotificationCenter
     
     func userNotificationCenter(_ center: UNUserNotificationCenter, willPresent notification: UNNotification, withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Swift.Void) {
         completionHandler([.alert, .sound])
-        
-        center.getNotificationCategories { (categories) in
-            print(categories)
-        }
     }
 }
