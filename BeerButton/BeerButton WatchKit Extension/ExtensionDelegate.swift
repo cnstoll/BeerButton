@@ -51,6 +51,7 @@ class ExtensionDelegate: NSObject, WKExtensionDelegate, UNUserNotificationCenter
     }
     
     func handleRefreshTask(task : WKRefreshBackgroundTask) {
+        // Handle our refresh by reloading our complication timeline
         let complicationServer = CLKComplicationServer.sharedInstance()
         
         for complication in complicationServer.activeComplications! {
@@ -85,6 +86,13 @@ class ExtensionDelegate: NSObject, WKExtensionDelegate, UNUserNotificationCenter
     func updateSnapshot(status: OrderStatus) {
         if let interfaceController = WKExtension.shared().rootInterfaceController as? InterfaceController {
             interfaceController.configureUI(status: status)
+        }
+    }
+    
+    func scheduleBackgroundRefresh() {
+        // Initiate a background refresh for 5 minutes from now.
+        WKExtension.shared().scheduleBackgroundRefresh(withPreferredDate: Date(timeIntervalSinceNow: 60 * 5), userInfo: nil) { (error) in
+            
         }
     }
     
