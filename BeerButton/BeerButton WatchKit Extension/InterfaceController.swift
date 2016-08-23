@@ -125,8 +125,8 @@ class InterfaceController: WKInterfaceController, WCSessionDelegate, WKCrownDele
         var delta = 1.0
         
         if let rps = crownSequencer?.rotationsPerSecond {
-            if rps > 1.0 {
-                delta = 5.0
+            if abs(rps) > 1.0 {
+                delta = 15.0
             }
         }
         
@@ -140,7 +140,11 @@ class InterfaceController: WKInterfaceController, WCSessionDelegate, WKCrownDele
         
         if newDelivery > 0 {
             if delta > 1 {
-                newDelivery = newDelivery - newDelivery.truncatingRemainder(dividingBy: delta)
+                if rotationalDelta < 0 {
+                    newDelivery = newDelivery - newDelivery.remainder(dividingBy: delta)
+                } else {
+                    newDelivery = newDelivery - newDelivery.truncatingRemainder(dividingBy: delta)
+                }
             }
             
             delivery = newDelivery
@@ -315,17 +319,16 @@ class InterfaceController: WKInterfaceController, WCSessionDelegate, WKCrownDele
         let time = orderInfo.date.timeIntervalSinceNow - 20.0
         let trigger = UNTimeIntervalNotificationTrigger(timeInterval: time, repeats: false)
         
-        let identifier = self.stringWithUUID()
+        let uniqueIdentifier = self.stringWithUUID()
 
-        let request = UNNotificationRequest(identifier: identifier, content: content, trigger: trigger)
+        let request = UNNotificationRequest(identifier: uniqueIdentifier, content: content, trigger: trigger)
         let center = UNUserNotificationCenter.current()
 
-        self.identifier = identifier
+        self.identifier = uniqueIdentifier
         
         center.removeAllDeliveredNotifications()
         center.removeAllPendingNotificationRequests()
         
-        // Disabled due to Xcode 8 Beta 5 Simulator Bug
         center.add(request)
     }
     
