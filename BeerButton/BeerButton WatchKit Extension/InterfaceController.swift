@@ -341,7 +341,7 @@ class InterfaceController: WKInterfaceController, WCSessionDelegate, WKCrownDele
     
     // WatchConnectivity Methods
     
-    func session(_ session: WCSession, didReceiveApplicationContext applicationContext: [String : Any]) {
+    public func session(_ session: WCSession, didReceiveApplicationContext applicationContext: [String : Any]) {
         if let array = applicationContext["beers"] as? [[String : AnyObject]] {
             beers.removeAll()
             
