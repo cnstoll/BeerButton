@@ -10,8 +10,8 @@ import ClockKit
 
 
 class ComplicationController: NSObject, CLKComplicationDataSource {
-    
-    public func getCurrentTimelineEntry(for complication: CLKComplication, withHandler handler: ((CLKComplicationTimelineEntry?) -> Void)) {
+
+    public func getCurrentTimelineEntry(for complication: CLKComplication, withHandler handler: @escaping (CLKComplicationTimelineEntry?) -> Void) {
         var title : String?
         var date : Date?
         
@@ -78,11 +78,11 @@ class ComplicationController: NSObject, CLKComplicationDataSource {
         handler(CLKComplicationTimeTravelDirections.forward)
     }
     
-    func getTimelineEntries(for complication: CLKComplication, before date: Date, limit: Int, withHandler handler: (([CLKComplicationTimelineEntry]?) -> Void)) {
+    func getTimelineEntries(for complication: CLKComplication, before date: Date, limit: Int, withHandler handler: @escaping (([CLKComplicationTimelineEntry]?) -> Void)) {
         handler(nil)
     }
     
-    func getTimelineEntries(for complication: CLKComplication, after date: Date, limit: Int, withHandler handler: (([CLKComplicationTimelineEntry]?) -> Void)) {
+    func getTimelineEntries(for complication: CLKComplication, after date: Date, limit: Int, withHandler handler: @escaping (([CLKComplicationTimelineEntry]?) -> Void)) {
         if let order = Order.currentOrder() {
             let date = order.date as Date
             
