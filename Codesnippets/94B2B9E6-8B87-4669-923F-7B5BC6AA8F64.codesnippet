@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>IDECodeSnippetCompletionPrefix</key>
+	<string>watchPlaceOrderComplicationEntry</string>
+	<key>IDECodeSnippetCompletionScopes</key>
+	<array>
+		<string>CodeBlock</string>
+	</array>
+	<key>IDECodeSnippetContents</key>
+	<string>let entry = CLKComplicationTimelineEntry()
+            let template = CLKComplicationTemplateModularLargeStandardBody()
+            
+            let headerTextProvider = CLKSimpleTextProvider(text: "Beer Button")
+            template.headerTextProvider = headerTextProvider
+            
+            let titleTextProvider = CLKSimpleTextProvider(text: "Place Order")
+            template.body1TextProvider = titleTextProvider
+            
+            entry.complicationTemplate = template
+            entry.date = Date()
+            
+            handler(entry)</string>
+	<key>IDECodeSnippetIdentifier</key>
+	<string>94B2B9E6-8B87-4669-923F-7B5BC6AA8F64</string>
+	<key>IDECodeSnippetLanguage</key>
+	<string>Xcode.SourceCodeLanguage.Swift</string>
+	<key>IDECodeSnippetTitle</key>
+	<string>Watch Place Order Complication Entry</string>
+	<key>IDECodeSnippetUserSnippet</key>
+	<true/>
+	<key>IDECodeSnippetVersion</key>
+	<integer>2</integer>
+</dict>
+</plist>

@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>IDECodeSnippetCompletionPrefix</key>
+	<string>watchSendNotificationRequest</string>
+	<key>IDECodeSnippetCompletionScopes</key>
+	<array>
+		<string>CodeBlock</string>
+	</array>
+	<key>IDECodeSnippetContents</key>
+	<string>let orderInfo = Order.orderNotification(message)
+        
+        let content = UNMutableNotificationContent()
+        content.title = "Beer Delivery"
+        content.body = orderInfo.title
+        content.userInfo = message
+        content.sound = UNNotificationSound.default()
+        content.categoryIdentifier = "BeerButtonOrderDelivery"
+        content.subtitle = "subtitle"
+        
+        let time = orderInfo.date.timeIntervalSinceNow - 20.0
+        let trigger = UNTimeIntervalNotificationTrigger(timeInterval: time, repeats: false)
+        
+        let uniqueIdentifier = self.stringWithUUID()
+
+        let request = UNNotificationRequest(identifier: uniqueIdentifier, content: content, trigger: trigger)
+        let center = UNUserNotificationCenter.current()
+
+        self.identifier = uniqueIdentifier
+        
+        center.removeAllDeliveredNotifications()
+        center.removeAllPendingNotificationRequests()
+        
+        center.add(request)</string>
+	<key>IDECodeSnippetIdentifier</key>
+	<string>8F3CC03A-D1E6-4AD5-8C8C-42BE5C94BF12</string>
+	<key>IDECodeSnippetLanguage</key>
+	<string>Xcode.SourceCodeLanguage.Swift</string>
+	<key>IDECodeSnippetSummary</key>
+	<string>Sending a notification for an order</string>
+	<key>IDECodeSnippetTitle</key>
+	<string>Watch Notification Sending</string>
+	<key>IDECodeSnippetUserSnippet</key>
+	<true/>
+	<key>IDECodeSnippetVersion</key>
+	<integer>0</integer>
+</dict>
+</plist>

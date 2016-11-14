@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>IDECodeSnippetCompletionPrefix</key>
+	<string>watchCrownDidRotate</string>
+	<key>IDECodeSnippetCompletionScopes</key>
+	<array>
+		<string>ClassImplementation</string>
+	</array>
+	<key>IDECodeSnippetContents</key>
+	<string>    func crownDidRotate(_ crownSequencer: WKCrownSequencer?, rotationalDelta: Double) {
+        guard Order.currentOrder() == nil else {
+            return
+        }
+        
+        var delta = 1.0
+        
+        if let rps = crownSequencer?.rotationsPerSecond {
+            if abs(rps) &gt; 1.0 {
+                delta = 15.0
+            }
+        }
+        
+        var newDelivery = delivery
+        
+        if rotationalDelta &lt; 0 {
+            newDelivery = delivery - delta
+        } else if rotationalDelta &gt; 0 {
+            newDelivery = delivery + delta
+        }
+        
+        if newDelivery &gt; 0 {
+            if delta &gt; 1 {
+                if rotationalDelta &lt; 0 {
+                    newDelivery = newDelivery - newDelivery.remainder(dividingBy: delta)
+                } else {
+                    newDelivery = newDelivery - newDelivery.truncatingRemainder(dividingBy: delta)
+                }
+            }
+            
+            delivery = newDelivery
+        } else {
+            delivery = 0
+        }
+        
+        self.updateBeerTimer(withTimeInterval: delivery)
+    }</string>
+	<key>IDECodeSnippetIdentifier</key>
+	<string>AE98AFBE-480A-4CA1-BE5E-D0B84C7158BB</string>
+	<key>IDECodeSnippetLanguage</key>
+	<string>Xcode.SourceCodeLanguage.Swift</string>
+	<key>IDECodeSnippetSummary</key>
+	<string>Watch crownDidRotate Method</string>
+	<key>IDECodeSnippetTitle</key>
+	<string>Watch Crown Did Rotate</string>
+	<key>IDECodeSnippetUserSnippet</key>
+	<true/>
+	<key>IDECodeSnippetVersion</key>
+	<integer>0</integer>
+</dict>
+</plist>

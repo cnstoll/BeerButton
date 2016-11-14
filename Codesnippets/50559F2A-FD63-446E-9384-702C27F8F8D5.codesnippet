@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>IDECodeSnippetCompletionPrefix</key>
+	<string>watchConnectivityReceiving</string>
+	<key>IDECodeSnippetCompletionScopes</key>
+	<array>
+		<string>CodeBlock</string>
+	</array>
+	<key>IDECodeSnippetContents</key>
+	<string>        if let array = applicationContext["beers"] as? [[String : AnyObject]] {
+            beers.removeAll()
+            
+            for item in array {
+                let beer = Beer(dictionary: item)
+                beers.append(beer)
+            }
+            
+            self.updatePickerItems()
+            self.updateCacheBeers()
+        }</string>
+	<key>IDECodeSnippetIdentifier</key>
+	<string>50559F2A-FD63-446E-9384-702C27F8F8D5</string>
+	<key>IDECodeSnippetLanguage</key>
+	<string>Xcode.SourceCodeLanguage.Swift</string>
+	<key>IDECodeSnippetSummary</key>
+	<string>Handling didReceiveApplicationContext on Watch</string>
+	<key>IDECodeSnippetTitle</key>
+	<string>Watch Receiving WatchConnectivity Context</string>
+	<key>IDECodeSnippetUserSnippet</key>
+	<true/>
+	<key>IDECodeSnippetVersion</key>
+	<integer>0</integer>
+</dict>
+</plist>

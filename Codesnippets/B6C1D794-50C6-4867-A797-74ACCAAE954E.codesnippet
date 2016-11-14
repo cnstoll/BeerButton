@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>IDECodeSnippetCompletionPrefix</key>
+	<string>watchOrderStatusComplicationEntry</string>
+	<key>IDECodeSnippetCompletionScopes</key>
+	<array>
+		<string>CodeBlock</string>
+	</array>
+	<key>IDECodeSnippetContents</key>
+	<string>var title : String?
+        var date : Date?
+        
+        if let order = Order.currentOrder() {
+            title = order.title
+            date = order.date as Date
+        }
+        
+        if let orderTitle = title, let orderDate = date {
+            let entry = CLKComplicationTimelineEntry()
+            let template = CLKComplicationTemplateModularLargeStandardBody()
+            
+            let headerTextProvider = CLKSimpleTextProvider(text: "Order Status")
+            template.headerTextProvider = headerTextProvider
+            
+            let titleTextProvider = CLKSimpleTextProvider(text: orderTitle)
+            template.body1TextProvider = titleTextProvider
+            
+            let timeTextProvider = CLKRelativeDateTextProvider(date: orderDate, style: .timer, units: .second)
+            template.body2TextProvider = timeTextProvider
+            
+            entry.complicationTemplate = template
+            entry.date = Date()
+            
+            handler(entry)
+        } </string>
+	<key>IDECodeSnippetIdentifier</key>
+	<string>B6C1D794-50C6-4867-A797-74ACCAAE954E</string>
+	<key>IDECodeSnippetLanguage</key>
+	<string>Xcode.SourceCodeLanguage.Swift</string>
+	<key>IDECodeSnippetTitle</key>
+	<string>Watch Order Status Complication Entry</string>
+	<key>IDECodeSnippetUserSnippet</key>
+	<true/>
+	<key>IDECodeSnippetVersion</key>
+	<integer>2</integer>
+</dict>
+</plist>

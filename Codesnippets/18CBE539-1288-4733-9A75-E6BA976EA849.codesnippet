@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>IDECodeSnippetCompletionPrefix</key>
+	<string>watchConnectivityiPhone</string>
+	<key>IDECodeSnippetCompletionScopes</key>
+	<array>
+		<string>CodeBlock</string>
+	</array>
+	<key>IDECodeSnippetContents</key>
+	<string>        // Start Session
+        let session = WCSession.default()
+        session.delegate = self
+        
+        // Remember to activate session
+        session.activate()
+        
+        // Update Context
+        var context = session.applicationContext
+        
+        context["beers"] = arrayOfBeerDictionaries()
+        
+        // Send Message
+        do {
+            try session.updateApplicationContext(context)
+        } catch let error {
+            print(error)
+        }</string>
+	<key>IDECodeSnippetIdentifier</key>
+	<string>18CBE539-1288-4733-9A75-E6BA976EA849</string>
+	<key>IDECodeSnippetLanguage</key>
+	<string>Xcode.SourceCodeLanguage.Swift</string>
+	<key>IDECodeSnippetSummary</key>
+	<string>Sending beer list from phone to watch</string>
+	<key>IDECodeSnippetTitle</key>
+	<string>Watch iPhone WatchConnectivity Sending Beers</string>
+	<key>IDECodeSnippetUserSnippet</key>
+	<true/>
+	<key>IDECodeSnippetVersion</key>
+	<integer>0</integer>
+</dict>
+</plist>

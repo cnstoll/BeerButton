@@ -27,7 +27,6 @@ class InterfaceController: WKInterfaceController, WCSessionDelegate, WKCrownDele
     
     var beers : [Beer] = []
     var currentBeer : Beer?
-    var session : WCSession?
     var delivery : TimeInterval = 60 * 5
     
     var secondTimer : Timer?
@@ -37,12 +36,10 @@ class InterfaceController: WKInterfaceController, WCSessionDelegate, WKCrownDele
 
     override func awake(withContext context: Any?) {
         super.awake(withContext: context)
-        
+    
         let session = WCSession.default()
         session.delegate = self
         session.activate()
-        
-        self.session = session
         
         if let order = Order.currentOrder() {
             configureUI(status: .Ordered(order, snapshot: false))
