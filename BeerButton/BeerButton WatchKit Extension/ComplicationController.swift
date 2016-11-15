@@ -55,7 +55,7 @@ class ComplicationController: NSObject, CLKComplicationDataSource {
     }
     
     private func getNextRequestedUpdateDate(handler: (Date?) -> Swift.Void) {
-        handler(nil);
+        handler(nil)
     }
     
     // MARK: - Gallery Methods
@@ -100,7 +100,7 @@ class ComplicationController: NSObject, CLKComplicationDataSource {
             
             handler([entry])
         } else {
-            handler(nil)   
+            handler(nil)
         }
     }
 }

@@ -28,6 +28,8 @@ class ExtensionDelegate: NSObject, WKExtensionDelegate, UNUserNotificationCenter
         
     }
     
+    /// MARK - Background Refresh Methods
+    
     func handle(_ backgroundTasks: Set<WKRefreshBackgroundTask>) {
         for task in backgroundTasks {
             if let snapshotTask = task as? WKSnapshotRefreshBackgroundTask {
@@ -38,6 +40,28 @@ class ExtensionDelegate: NSObject, WKExtensionDelegate, UNUserNotificationCenter
         }
     }
     
+    /// MARK - Notification Methods
+    
+    func setNotificationPreferences() {
+        let center = UNUserNotificationCenter.current()
+        center.requestAuthorization(options: [.alert, .sound]) { (granted, error) in
+            if granted {
+                let category = UNNotificationCategory(identifier: "BeerButtonOrderDelivery", actions: [], intentIdentifiers: [], options: [])
+                center.setNotificationCategories(Set([category]))
+            } else {
+                print("No Permissions" + error.debugDescription)
+            }
+        }
+    }
+    
+    /// MARK - UNUserNotificationCenterDelegate Methods
+    
+    func userNotificationCenter(_ center: UNUserNotificationCenter, willPresent notification: UNNotification, withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Swift.Void) {
+        completionHandler([.alert, .sound])
+    }
+}
+
+extension ExtensionDelegate {
     /// MARK - Background Update Methods
     
     func handleSnapshotTask(snapshotTask : WKSnapshotRefreshBackgroundTask) {
@@ -60,7 +84,7 @@ class ExtensionDelegate: NSObject, WKExtensionDelegate, UNUserNotificationCenter
         
         task.setTaskCompleted()
     }
-
+    
     /// MARK - Internal Methods
     
     func emphasizeOrder() {
@@ -94,24 +118,5 @@ class ExtensionDelegate: NSObject, WKExtensionDelegate, UNUserNotificationCenter
         WKExtension.shared().scheduleBackgroundRefresh(withPreferredDate: Date(timeIntervalSinceNow: 60 * 5), userInfo: nil) { (error) in
             
         }
-    }
-    
-    func setNotificationPreferences() {
-        let center = UNUserNotificationCenter.current()
-        center.requestAuthorization(options: [.alert, .sound]) { (granted, error) in
-            if granted {
-                let category = UNNotificationCategory(identifier: "BeerButtonOrderDelivery", actions: [], intentIdentifiers: [], options: [])
-                center.setNotificationCategories(Set([category]))
-                center.delegate = self
-            } else {
-                print("No Permissions" + error.debugDescription)
-            }
-        }
-    }
-    
-    /// MARK - UNUserNotificationCenterDelegate Methods
-    
-    func userNotificationCenter(_ center: UNUserNotificationCenter, willPresent notification: UNNotification, withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Swift.Void) {
-        completionHandler([.alert, .sound])
     }
 }

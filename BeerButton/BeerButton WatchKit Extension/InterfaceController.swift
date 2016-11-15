@@ -51,8 +51,7 @@ class InterfaceController: WKInterfaceController, WCSessionDelegate, WKCrownDele
         restoreCachedBeers()
         updateComplication()
         updatePickerItems()
-        
-        self.crownSequencer.delegate = self
+        updateCrownSequencer()
     }
     
     // Lifecycle Methods
@@ -77,6 +76,16 @@ class InterfaceController: WKInterfaceController, WCSessionDelegate, WKCrownDele
         
     }
     
+    // Complication Methods
+    
+    func updateComplication() {
+        let complicationServer = CLKComplicationServer.sharedInstance()
+        
+        for complication in complicationServer.activeComplications! {
+            complicationServer.reloadTimeline(for: complication)
+        }
+    }
+    
     // Picker Methods
     
     func updatePickerItems() {
@@ -94,7 +103,7 @@ class InterfaceController: WKInterfaceController, WCSessionDelegate, WKCrownDele
         }
         
         self.picker?.setItems(items)
-
+        
         if (items.count > 0) {
             configureOrderingUI(withIndex: 0)
         }
@@ -108,11 +117,11 @@ class InterfaceController: WKInterfaceController, WCSessionDelegate, WKCrownDele
         self.picker?.focus()
     }
     
-    @IBAction func focusDatePicker(gesture : WKTapGestureRecognizer) {
-        self.crownSequencer.focus()
-    }
-    
     // Crown Sequencer Methods
+    
+    func updateCrownSequencer() {
+        self.crownSequencer.delegate = self
+    }
     
     func crownDidRotate(_ crownSequencer: WKCrownSequencer?, rotationalDelta: Double) {
         guard Order.currentOrder() == nil else {
@@ -152,21 +161,11 @@ class InterfaceController: WKInterfaceController, WCSessionDelegate, WKCrownDele
         self.updateBeerTimer(withTimeInterval: delivery)
     }
     
-    // Order Methods
-    
-    @IBAction func resetOrder() {
-        self.secondTimer?.invalidate()
-        self.secondTimer = nil
-        
-        Order.clearOrder()
-        configureUI(status: .None)
-        updateComplication()
-        updatePickerItems()
-        
-        let center = UNUserNotificationCenter.current()
-        center.removeAllDeliveredNotifications()
-        center.removeAllPendingNotificationRequests()
+    @IBAction func focusDatePicker(gesture : WKTapGestureRecognizer) {
+        self.crownSequencer.focus()
     }
+    
+    // Ordering Methods
     
     @IBAction func didOrderBeer(_ sender : WKInterfaceButton) {
         let date = Date(timeIntervalSinceNow: delivery)
@@ -189,7 +188,48 @@ class InterfaceController: WKInterfaceController, WCSessionDelegate, WKCrownDele
         updateComplication()
     }
     
+    // Notification Methods
+    
+    func notifyUser(_ message : [String : Any]) {
+        let orderInfo = Order.orderNotification(message)
+        
+        let content = UNMutableNotificationContent()
+        content.title = "Beer Delivery"
+        content.body = orderInfo.title
+        content.userInfo = message
+        content.sound = UNNotificationSound.default()
+        content.categoryIdentifier = "BeerButtonOrderDelivery"
+        content.subtitle = "subtitle"
+        
+        let time = orderInfo.date.timeIntervalSinceNow - 20.0
+        let trigger = UNTimeIntervalNotificationTrigger(timeInterval: time, repeats: false)
+        
+        let uniqueIdentifier = self.stringWithUUID()
+        
+        let request = UNNotificationRequest(identifier: uniqueIdentifier, content: content, trigger: trigger)
+        let center = UNUserNotificationCenter.current()
+        
+        self.identifier = uniqueIdentifier
+        
+        center.removeAllDeliveredNotifications()
+        center.removeAllPendingNotificationRequests()
+        
+        center.add(request)
+    }
+    
     // UI Methods
+    
+    func configureOrderingUI(withIndex index: Int) {
+        guard Order.currentOrder() == nil else {
+            return
+        }
+        
+        let beer = beers[index]
+        currentBeer = beer
+        
+        self.group?.setBackgroundImage(beer.image)
+        self.button?.setTitle(beer.title)
+    }
     
     func configureUI(status: OrderStatus) {
         if case .Ordered(let order, let snapshot) = status {
@@ -205,7 +245,7 @@ class InterfaceController: WKInterfaceController, WCSessionDelegate, WKCrownDele
             self.group?.setHeight(size)
             self.group?.setWidth(size)
             self.group?.setCornerRadius(size / 2)
-
+            
             self.button?.setAlpha(0)
             self.beerTitle?.setAlpha(1)
             
@@ -236,17 +276,46 @@ class InterfaceController: WKInterfaceController, WCSessionDelegate, WKCrownDele
         }
     }
     
-    func configureOrderingUI(withIndex index: Int) {
-        guard Order.currentOrder() == nil else {
-            return
+    // WatchConnectivity Methods
+    
+    public func session(_ session: WCSession, didReceiveApplicationContext applicationContext: [String : Any]) {
+        if let array = applicationContext["beers"] as? [[String : AnyObject]] {
+            beers.removeAll()
+            
+            for item in array {
+                let beer = Beer(dictionary: item)
+                beers.append(beer)
+            }
+            
+            self.updatePickerItems()
+            self.updateCacheBeers()
         }
-        
-        let beer = beers[index]
-        currentBeer = beer
-        
-        self.group?.setBackgroundImage(beer.image)
-        self.button?.setTitle(beer.title)
     }
+    
+    public func session(_ session: WCSession, activationDidCompleteWith activationState: WCSessionActivationState, error: Error?) {
+        
+    }
+}
+
+extension InterfaceController {
+    
+    // Order Methods
+    
+    @IBAction func resetOrder() {
+        self.secondTimer?.invalidate()
+        self.secondTimer = nil
+        
+        Order.clearOrder()
+        configureUI(status: .None)
+        updateComplication()
+        updatePickerItems()
+        
+        let center = UNUserNotificationCenter.current()
+        center.removeAllDeliveredNotifications()
+        center.removeAllPendingNotificationRequests()
+    }
+    
+    // Timer Methods
     
     func startTimer(forOrder order: Order) {
         self.secondTimer?.invalidate()
@@ -276,7 +345,7 @@ class InterfaceController: WKInterfaceController, WCSessionDelegate, WKCrownDele
         guard let time = formatter.string(from: timeInterval) else {
             return
         }
-
+        
         if snapshot {
             let largerTime = NSMutableAttributedString(string: time)
             largerTime.addAttribute(NSFontAttributeName, value: UIFont.systemFont(ofSize: 48), range: NSMakeRange(0, time.characters.count))
@@ -292,68 +361,13 @@ class InterfaceController: WKInterfaceController, WCSessionDelegate, WKCrownDele
         })
     }
     
-    func updateComplication() {
-        let complicationServer = CLKComplicationServer.sharedInstance()
-        
-        for complication in complicationServer.activeComplications! {
-            complicationServer.reloadTimeline(for: complication)
-        }
-    }
-    
-    // Notification Methods
-    
-    func notifyUser(_ message : [String : Any]) {
-        let orderInfo = Order.orderNotification(message)
-        
-        let content = UNMutableNotificationContent()
-        content.title = "Beer Delivery"
-        content.body = orderInfo.title
-        content.userInfo = message
-        content.sound = UNNotificationSound.default()
-        content.categoryIdentifier = "BeerButtonOrderDelivery"
-        content.subtitle = "subtitle"
-        
-        let time = orderInfo.date.timeIntervalSinceNow - 20.0
-        let trigger = UNTimeIntervalNotificationTrigger(timeInterval: time, repeats: false)
-        
-        let uniqueIdentifier = self.stringWithUUID()
-
-        let request = UNNotificationRequest(identifier: uniqueIdentifier, content: content, trigger: trigger)
-        let center = UNUserNotificationCenter.current()
-
-        self.identifier = uniqueIdentifier
-        
-        center.removeAllDeliveredNotifications()
-        center.removeAllPendingNotificationRequests()
-        
-        center.add(request)
-    }
+    // Notification Extensions
     
     // https://forums.developer.apple.com/message/149257
     func stringWithUUID() -> String {
         let uuidObj = CFUUIDCreate(nil)
         let uuidString = CFUUIDCreateString(nil, uuidObj)!
         return uuidString as String
-    }  
-    
-    // WatchConnectivity Methods
-    
-    public func session(_ session: WCSession, didReceiveApplicationContext applicationContext: [String : Any]) {
-        if let array = applicationContext["beers"] as? [[String : AnyObject]] {
-            beers.removeAll()
-            
-            for item in array {
-                let beer = Beer(dictionary: item)
-                beers.append(beer)
-            }
-            
-            self.updatePickerItems()
-            self.updateCacheBeers()
-        }
-    }
-    
-    public func session(_ session: WCSession, activationDidCompleteWith activationState: WCSessionActivationState, error: Error?) {
-        
     }
     
     // Beer Model Methods
