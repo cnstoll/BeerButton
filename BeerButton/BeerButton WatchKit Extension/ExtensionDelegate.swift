@@ -8,20 +8,39 @@
 
 import ClockKit
 import UserNotifications
+import WatchConnectivity
 import WatchKit
 
 class ExtensionDelegate: NSObject, WKExtensionDelegate, UNUserNotificationCenterDelegate {
 
+    var watchConnectivityBackgroundTasks: [WKWatchConnectivityRefreshBackgroundTask] = []
+
+    override init() {
+        super.init()
+        
+        let session = WCSession.default()
+
+        // https://developer.apple.com/library/content/samplecode/QuickSwitch/Listings/QuickSwitch_WatchKit_Extension_ExtensionDelegate_swift.html
+        session.addObserver(self, forKeyPath: "activationState", options: [], context: nil)
+        session.addObserver(self, forKeyPath: "hasContentPending", options: [], context: nil)
+    }
+    
+    override func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey : Any]?, context: UnsafeMutableRawPointer?) {
+        DispatchQueue.main.async {
+            self.completeAllTasksIfReady()
+        }
+    }
+    
     func applicationDidFinishLaunching() {
     }
 
     func applicationDidBecomeActive() {
         setNotificationPreferences()
-        deemphasizeOrder()
+        returnToDefaultUI()
     }
 
     func applicationWillResignActive() {
-        emphasizeOrder()
+        updateUIForDock()
     }
     
     func applicationDidEnterBackground() {
@@ -32,11 +51,24 @@ class ExtensionDelegate: NSObject, WKExtensionDelegate, UNUserNotificationCenter
     
     func handle(_ backgroundTasks: Set<WKRefreshBackgroundTask>) {
         for task in backgroundTasks {
-            if let snapshotTask = task as? WKSnapshotRefreshBackgroundTask {
-                handleSnapshotTask(snapshotTask: snapshotTask)
+            if let watchConnectivityBackgroundTask = task as? WKWatchConnectivityRefreshBackgroundTask {
+                handleWatchConnectivityBackgroundTask(watchConnectivityBackgroundTask)
+            } else if let snapshotTask = task as? WKSnapshotRefreshBackgroundTask {
+                handleSnapshotTask(snapshotTask)
             } else {
-                handleRefreshTask(task: task)
+                handleRefreshTask(task)
             }
+        }
+        
+        completeAllTasksIfReady()
+    }
+    
+    func completeAllTasksIfReady() {
+        let session = WCSession.default()
+        // the session's properties only have valid values if the session is activated, so check that first
+        if session.activationState == .activated && !session.hasContentPending {
+            watchConnectivityBackgroundTasks.forEach { $0.setTaskCompleted() }
+            watchConnectivityBackgroundTasks.removeAll()
         }
     }
     
@@ -64,7 +96,11 @@ class ExtensionDelegate: NSObject, WKExtensionDelegate, UNUserNotificationCenter
 extension ExtensionDelegate {
     /// MARK - Background Update Methods
     
-    func handleSnapshotTask(snapshotTask : WKSnapshotRefreshBackgroundTask) {
+    func handleWatchConnectivityBackgroundTask (_ watchConnectivityBackgroundTask : WKWatchConnectivityRefreshBackgroundTask) {
+        self.watchConnectivityBackgroundTasks.append(watchConnectivityBackgroundTask)
+    }
+    
+    func handleSnapshotTask(_ snapshotTask : WKSnapshotRefreshBackgroundTask) {
         if let order = Order.currentOrder() {
             updateSnapshot(status: .Ordered(order, snapshot: true))
             snapshotTask.setTaskCompleted(restoredDefaultState: false, estimatedSnapshotExpiration: order.date, userInfo: nil)
@@ -74,7 +110,7 @@ extension ExtensionDelegate {
         }
     }
     
-    func handleRefreshTask(task : WKRefreshBackgroundTask) {
+    func handleRefreshTask(_ task : WKRefreshBackgroundTask) {
         // Handle our refresh by reloading our complication timeline
         let complicationServer = CLKComplicationServer.sharedInstance()
         
@@ -87,7 +123,7 @@ extension ExtensionDelegate {
     
     /// MARK - Internal Methods
     
-    func emphasizeOrder() {
+    func updateUIForDock() {
         if let order = Order.currentOrder() {
             updateSnapshot(status: .Ordered(order, snapshot: true))
         } else {
@@ -95,7 +131,7 @@ extension ExtensionDelegate {
         }
     }
     
-    func deemphasizeOrder() {
+    func returnToDefaultUI() {
         if let interfaceController = WKExtension.shared().rootInterfaceController as? InterfaceController {
             interfaceController.animate(withDuration: 0.5, animations: {
                 if let order = Order.currentOrder() {

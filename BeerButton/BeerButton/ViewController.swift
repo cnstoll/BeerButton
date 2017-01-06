@@ -105,8 +105,10 @@ class ViewController: UITableViewController, UINavigationControllerDelegate, UII
         }
     }
     
-    func session(_ session: WCSession, didReceiveMessage message: [String : Any]) {
-
+    func session(_ session: WCSession, didReceiveMessage message: [String : Any], replyHandler: @escaping ([String : Any]) -> Void) {
+        if let message = message["message"] as? String, message == "refreshRequest" {
+            replyHandler(["beers" : arrayOfBeerDictionaries()])
+        }
     }
     
     public func session(_ session: WCSession, activationDidCompleteWith activationState: WCSessionActivationState, error: Error?) {
