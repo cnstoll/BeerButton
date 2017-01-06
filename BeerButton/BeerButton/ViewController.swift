@@ -31,11 +31,6 @@ class ViewController: UITableViewController, UINavigationControllerDelegate, UII
         }
         
         updateWatchBeers()
-        
-        let session = WCSession.default()
-        session.delegate = self
-        session.activate()
-        
         setNotificationPreferences()
     }
     
@@ -90,7 +85,10 @@ class ViewController: UITableViewController, UINavigationControllerDelegate, UII
         session.delegate = self
         
         // Remember to activate session
-        session.activate()
+        if session.activationState != .activated {
+            session.activate()
+            return
+        }
         
         // Update Context
         var context = session.applicationContext
@@ -112,7 +110,9 @@ class ViewController: UITableViewController, UINavigationControllerDelegate, UII
     }
     
     public func session(_ session: WCSession, activationDidCompleteWith activationState: WCSessionActivationState, error: Error?) {
-        
+        if activationState == .activated {
+            updateWatchBeers()
+        }
     }
     
     public func sessionDidBecomeInactive(_ session: WCSession) {

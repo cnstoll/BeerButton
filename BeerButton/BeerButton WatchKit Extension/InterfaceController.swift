@@ -107,15 +107,6 @@ class InterfaceController: WKInterfaceController, WCSessionDelegate, WKCrownDele
         if (items.count > 0) {
             configureOrderingUI(withIndex: 0)
         }
-        
-        let session = WCSession.default()
-        session.sendMessage(["message" : "refreshRequest"], replyHandler: { (items : [String : Any]) in
-            if let array = items["beers"] as? [[String : AnyObject]] {
-                self.handleArrayOfBeers(array: array)
-            }
-        }) { (_) in
-            
-        }
     }
     
     @IBAction func pickerDidChange(_ index : Int) {
@@ -294,7 +285,16 @@ class InterfaceController: WKInterfaceController, WCSessionDelegate, WKCrownDele
     }
     
     public func session(_ session: WCSession, activationDidCompleteWith activationState: WCSessionActivationState, error: Error?) {
-        
+        if activationState == .activated {
+            let session = WCSession.default()
+            session.sendMessage(["message" : "refreshRequest"], replyHandler: { (items : [String : Any]) in
+                if let array = items["beers"] as? [[String : AnyObject]] {
+                    self.handleArrayOfBeers(array: array)
+                }
+            }) { (_) in
+                
+            }
+        }
     }
 }
 
