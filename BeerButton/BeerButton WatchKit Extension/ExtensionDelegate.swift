@@ -44,7 +44,9 @@ class ExtensionDelegate: NSObject, WKExtensionDelegate, UNUserNotificationCenter
     }
     
     func applicationDidEnterBackground() {
-        
+        WKExtension.shared().scheduleSnapshotRefresh(withPreferredDate: Date(), userInfo: nil) { (_) in
+            
+        }
     }
     
     /// MARK - Background Refresh Methods
