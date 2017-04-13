@@ -3,13 +3,16 @@
 <plist version="1.0">
 <dict>
 	<key>IDECodeSnippetCompletionPrefix</key>
-	<string>watchPlaceOrderComplicationEntry</string>
+	<string>watchComplicationAfterDeliveryTimelineEntry</string>
 	<key>IDECodeSnippetCompletionScopes</key>
 	<array>
 		<string>CodeBlock</string>
 	</array>
 	<key>IDECodeSnippetContents</key>
-	<string>let entry = CLKComplicationTimelineEntry()
+	<string>        if let order = Order.currentOrder() {
+            let date = order.date as Date
+            
+            let entry = CLKComplicationTimelineEntry()
             let template = CLKComplicationTemplateModularLargeStandardBody()
             
             let headerTextProvider = CLKSimpleTextProvider(text: "Beer Button")
@@ -19,15 +22,20 @@
             template.body1TextProvider = titleTextProvider
             
             entry.complicationTemplate = template
-            entry.date = Date()
+            entry.date = date
             
-            handler(entry)</string>
+            handler([entry])
+        } else {
+            handler(nil)   
+        }</string>
 	<key>IDECodeSnippetIdentifier</key>
-	<string>94B2B9E6-8B87-4669-923F-7B5BC6AA8F64</string>
+	<string>EE150807-1EBD-4E17-BFD1-FD68A5518E03</string>
 	<key>IDECodeSnippetLanguage</key>
 	<string>Xcode.SourceCodeLanguage.Swift</string>
+	<key>IDECodeSnippetSummary</key>
+	<string>Update complication after order delivery</string>
 	<key>IDECodeSnippetTitle</key>
-	<string>Watch Place Order Complication Entry</string>
+	<string>Watch Complication Entry After Order Delivery Timeline</string>
 	<key>IDECodeSnippetUserSnippet</key>
 	<true/>
 	<key>IDECodeSnippetVersion</key>

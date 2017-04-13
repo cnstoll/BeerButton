@@ -3,21 +3,29 @@
 <plist version="1.0">
 <dict>
 	<key>IDECodeSnippetCompletionPrefix</key>
-	<string>watchConnectivityActivate</string>
+	<string>watchConfigureOrderingUI</string>
 	<key>IDECodeSnippetCompletionScopes</key>
 	<array>
 		<string>CodeBlock</string>
 	</array>
 	<key>IDECodeSnippetContents</key>
-	<string>let session = WCSession.default()
-        session.delegate = self
-        session.activate()</string>
+	<string>        guard Order.currentOrder() == nil else {
+            return
+        }
+        
+        let beer = beers[index]
+        currentBeer = beer
+        
+        self.group?.setBackgroundImage(beer.image)
+        self.button?.setTitle(beer.title)</string>
 	<key>IDECodeSnippetIdentifier</key>
-	<string>D171BE6E-26E6-4D71-8E15-EC81F62A6EEB</string>
+	<string>7501A694-6A3B-48BC-BC9C-8248EE320E6D</string>
 	<key>IDECodeSnippetLanguage</key>
 	<string>Xcode.SourceCodeLanguage.Swift</string>
+	<key>IDECodeSnippetSummary</key>
+	<string>Update Ordering UI When Picker Changes</string>
 	<key>IDECodeSnippetTitle</key>
-	<string>Watch Connectivity Activate Session</string>
+	<string>Watch Configure Ordering UI Picker Did Change</string>
 	<key>IDECodeSnippetUserSnippet</key>
 	<true/>
 	<key>IDECodeSnippetVersion</key>

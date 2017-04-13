@@ -3,31 +3,38 @@
 <plist version="1.0">
 <dict>
 	<key>IDECodeSnippetCompletionPrefix</key>
-	<string>watchConnectivityReceiving</string>
+	<string>watchPickerItems</string>
 	<key>IDECodeSnippetCompletionScopes</key>
 	<array>
 		<string>CodeBlock</string>
 	</array>
 	<key>IDECodeSnippetContents</key>
-	<string>        if let array = applicationContext["beers"] as? [[String : AnyObject]] {
-            beers.removeAll()
+	<string>        var items : [WKPickerItem] = []
+        
+        for beer in beers {
+            let item = WKPickerItem()
+            item.title = beer.title
             
-            for item in array {
-                let beer = Beer(dictionary: item)
-                beers.append(beer)
+            if let image = beer.image {
+                item.contentImage = WKImage(image: image)
             }
             
-            self.updatePickerItems()
-            self.updateCacheBeers()
+            items.append(item)
+        }
+        
+        self.picker?.setItems(items)
+
+        if (items.count &gt; 0) {
+            configureOrderingUI(withIndex: 0)
         }</string>
 	<key>IDECodeSnippetIdentifier</key>
-	<string>50559F2A-FD63-446E-9384-702C27F8F8D5</string>
+	<string>B51803D6-3BAE-4D79-9A85-300F6067D93E</string>
 	<key>IDECodeSnippetLanguage</key>
 	<string>Xcode.SourceCodeLanguage.Swift</string>
 	<key>IDECodeSnippetSummary</key>
-	<string>Handling didReceiveApplicationContext on Watch</string>
+	<string>Update Watch Picker Items</string>
 	<key>IDECodeSnippetTitle</key>
-	<string>Watch Receiving WatchConnectivity Context</string>
+	<string>Watch Update Picker Items</string>
 	<key>IDECodeSnippetUserSnippet</key>
 	<true/>
 	<key>IDECodeSnippetVersion</key>

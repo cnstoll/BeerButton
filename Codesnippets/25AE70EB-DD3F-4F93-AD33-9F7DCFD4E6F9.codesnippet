@@ -3,31 +3,29 @@
 <plist version="1.0">
 <dict>
 	<key>IDECodeSnippetCompletionPrefix</key>
-	<string>watchConnectivityReceiving</string>
+	<string>watchNotificationPreferences</string>
 	<key>IDECodeSnippetCompletionScopes</key>
 	<array>
 		<string>CodeBlock</string>
 	</array>
 	<key>IDECodeSnippetContents</key>
-	<string>        if let array = applicationContext["beers"] as? [[String : AnyObject]] {
-            beers.removeAll()
-            
-            for item in array {
-                let beer = Beer(dictionary: item)
-                beers.append(beer)
+	<string>        let center = UNUserNotificationCenter.current()
+        center.requestAuthorization(options: [.alert, .sound]) { (granted, error) in
+            if granted {
+                let category = UNNotificationCategory(identifier: "BeerButtonOrderDelivery", actions: [], intentIdentifiers: [], options: [])
+                center.setNotificationCategories(Set([category]))
+            } else {
+                print("No Permissions" + error.debugDescription)
             }
-            
-            self.updatePickerItems()
-            self.updateCacheBeers()
         }</string>
 	<key>IDECodeSnippetIdentifier</key>
-	<string>50559F2A-FD63-446E-9384-702C27F8F8D5</string>
+	<string>25AE70EB-DD3F-4F93-AD33-9F7DCFD4E6F9</string>
 	<key>IDECodeSnippetLanguage</key>
 	<string>Xcode.SourceCodeLanguage.Swift</string>
 	<key>IDECodeSnippetSummary</key>
-	<string>Handling didReceiveApplicationContext on Watch</string>
+	<string>Set Notification Preferences on iPhone</string>
 	<key>IDECodeSnippetTitle</key>
-	<string>Watch Receiving WatchConnectivity Context</string>
+	<string>Watch Notification Preferences</string>
 	<key>IDECodeSnippetUserSnippet</key>
 	<true/>
 	<key>IDECodeSnippetVersion</key>

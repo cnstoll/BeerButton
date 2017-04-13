@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>IDECodeSnippetCompletionPrefix</key>
+	<string>watchOrderBeerButton</string>
+	<key>IDECodeSnippetCompletionScopes</key>
+	<array>
+		<string>CodeBlock</string>
+	</array>
+	<key>IDECodeSnippetContents</key>
+	<string>        let date = Date(timeIntervalSinceNow: delivery)
+        
+        if let beer = self.currentBeer {
+            let order = Order(beer: beer, deliveryDate: date)
+            
+            let notification = order.send()
+            let message = Order.orderNotificationDictionary(notification)
+            notifyUser(message)
+            
+            self.animate(withDuration: 0.5, animations: {
+                self.configureUI(status: .Ordered(order, snapshot: false))
+            })
+            
+            startTimer(forOrder: order)
+        }
+        
+        scheduleSnapshotRefresh(forDate: date)
+        updateComplication()</string>
+	<key>IDECodeSnippetIdentifier</key>
+	<string>69A5209D-B985-4A32-8431-67CE6AB737EF</string>
+	<key>IDECodeSnippetLanguage</key>
+	<string>Xcode.SourceCodeLanguage.Swift</string>
+	<key>IDECodeSnippetSummary</key>
+	<string>Tapping button to order a beer</string>
+	<key>IDECodeSnippetTitle</key>
+	<string>Watch Did Order Beer</string>
+	<key>IDECodeSnippetUserSnippet</key>
+	<true/>
+	<key>IDECodeSnippetVersion</key>
+	<integer>2</integer>
+</dict>
+</plist>

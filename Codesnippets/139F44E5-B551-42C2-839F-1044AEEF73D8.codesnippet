@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>IDECodeSnippetCompletionPrefix</key>
+	<string>watchConfigureUI</string>
+	<key>IDECodeSnippetCompletionScopes</key>
+	<array>
+		<string>CodeBlock</string>
+	</array>
+	<key>IDECodeSnippetContents</key>
+	<string>        if case .Ordered(let order, let snapshot) = status {
+
+            
+            self.button?.setAlpha(0)
+            self.beerTitle?.setAlpha(1)
+            
+            self.button?.setTitle("")
+            self.beerTitle?.setText(order.title)
+            
+            let beer = Beer(dictionary: order.beerDictionary)
+            self.group?.setBackgroundImage(beer.image)
+            
+            self.snapshot = snapshot
+        } else {
+            self.group?.setHorizontalAlignment(.center)
+            self.group?.setVerticalAlignment(.center)
+            self.beerTimer?.setHorizontalAlignment(.center)
+            self.beerTimer?.setVerticalAlignment(.bottom)
+            self.beerTitle?.setHorizontalAlignment(.center)
+            self.beerTitle?.setVerticalAlignment(.bottom)
+            
+            self.group?.setHeight(100)
+            self.group?.setWidth(100)
+            self.group?.setCornerRadius(50)
+            
+            self.button?.setAlpha(1)
+            self.beerTitle?.setAlpha(0)
+            
+            self.snapshot = false
+            self.updateBeerTimer(withTimeInterval: delivery)
+        }</string>
+	<key>IDECodeSnippetIdentifier</key>
+	<string>139F44E5-B551-42C2-839F-1044AEEF73D8</string>
+	<key>IDECodeSnippetLanguage</key>
+	<string>Xcode.SourceCodeLanguage.Swift</string>
+	<key>IDECodeSnippetSummary</key>
+	<string>Watch Configure Default UI</string>
+	<key>IDECodeSnippetTitle</key>
+	<string>Watch Configure UI</string>
+	<key>IDECodeSnippetUserSnippet</key>
+	<true/>
+	<key>IDECodeSnippetVersion</key>
+	<integer>2</integer>
+</dict>
+</plist>
