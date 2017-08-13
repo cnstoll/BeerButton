@@ -32,6 +32,7 @@ class ExtensionDelegate: NSObject, WKExtensionDelegate, UNUserNotificationCenter
     }
     
     func applicationDidFinishLaunching() {
+        UNUserNotificationCenter.current().delegate = self
     }
 
     func applicationDidBecomeActive() {

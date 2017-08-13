@@ -81,9 +81,9 @@ class InterfaceController: WKInterfaceController, WCSessionDelegate, WKCrownDele
     func updateComplication() {
         let complicationServer = CLKComplicationServer.sharedInstance()
         
-        for complication in complicationServer.activeComplications! {
+        complicationServer.activeComplications?.forEach({ (complication) in
             complicationServer.reloadTimeline(for: complication)
-        }
+        })
     }
     
     // Picker Methods
