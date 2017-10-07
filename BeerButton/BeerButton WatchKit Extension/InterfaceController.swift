@@ -37,7 +37,7 @@ class InterfaceController: WKInterfaceController, WCSessionDelegate, WKCrownDele
     override func awake(withContext context: Any?) {
         super.awake(withContext: context)
     
-        let session = WCSession.default()
+        let session = WCSession.default
         session.delegate = self
         session.activate()
         
@@ -286,7 +286,7 @@ class InterfaceController: WKInterfaceController, WCSessionDelegate, WKCrownDele
     
     public func session(_ session: WCSession, activationDidCompleteWith activationState: WCSessionActivationState, error: Error?) {
         if activationState == .activated {
-            let session = WCSession.default()
+            let session = WCSession.default
             session.sendMessage(["message" : "refreshRequest"], replyHandler: { (items : [String : Any]) in
                 if let array = items["beers"] as? [[String : AnyObject]] {
                     self.handleArrayOfBeers(array: array)
@@ -349,7 +349,7 @@ extension InterfaceController {
         
         if snapshot {
             let largerTime = NSMutableAttributedString(string: time)
-            largerTime.addAttribute(NSFontAttributeName, value: UIFont.systemFont(ofSize: 48), range: NSMakeRange(0, time.characters.count))
+            largerTime.addAttribute(NSAttributedStringKey.font, value: UIFont.systemFont(ofSize: 48), range: NSMakeRange(0, time.characters.count))
             self.beerTimer?.setAttributedText(largerTime)
         } else {
             self.beerTimer?.setText(time)

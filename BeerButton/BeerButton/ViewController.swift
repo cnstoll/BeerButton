@@ -81,7 +81,7 @@ class ViewController: UITableViewController, UINavigationControllerDelegate, UII
     
     func updateWatchBeers() {
         // Start Session
-        let session = WCSession.default()
+        let session = WCSession.default
         session.delegate = self
         
         // Remember to activate session

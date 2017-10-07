@@ -18,7 +18,7 @@ class ExtensionDelegate: NSObject, WKExtensionDelegate, UNUserNotificationCenter
     override init() {
         super.init()
         
-        let session = WCSession.default()
+        let session = WCSession.default
 
         // https://developer.apple.com/library/content/samplecode/QuickSwitch/Listings/QuickSwitch_WatchKit_Extension_ExtensionDelegate_swift.html
         session.addObserver(self, forKeyPath: "activationState", options: [], context: nil)
@@ -67,7 +67,7 @@ class ExtensionDelegate: NSObject, WKExtensionDelegate, UNUserNotificationCenter
     }
     
     func completeAllTasksIfReady() {
-        let session = WCSession.default()
+        let session = WCSession.default
         // the session's properties only have valid values if the session is activated, so check that first
         if session.activationState == .activated && !session.hasContentPending {
             watchConnectivityBackgroundTasks.forEach { $0.setTaskCompleted() }
