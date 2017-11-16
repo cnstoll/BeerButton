@@ -349,7 +349,7 @@ extension InterfaceController {
         
         if snapshot {
             let largerTime = NSMutableAttributedString(string: time)
-            largerTime.addAttribute(NSAttributedStringKey.font, value: UIFont.systemFont(ofSize: 48), range: NSMakeRange(0, time.characters.count))
+            largerTime.addAttribute(NSAttributedStringKey.font, value: UIFont.systemFont(ofSize: 48), range: NSMakeRange(0, time.count))
             self.beerTimer?.setAttributedText(largerTime)
         } else {
             self.beerTimer?.setText(time)
