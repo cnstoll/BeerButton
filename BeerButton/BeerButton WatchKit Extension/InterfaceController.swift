@@ -197,7 +197,7 @@ class InterfaceController: WKInterfaceController, WCSessionDelegate, WKCrownDele
         content.title = "Beer Delivery"
         content.body = orderInfo.title
         content.userInfo = message
-        content.sound = UNNotificationSound.default()
+        content.sound = UNNotificationSound.default
         content.categoryIdentifier = "BeerButtonOrderDelivery"
         content.subtitle = "subtitle"
         
@@ -349,7 +349,7 @@ extension InterfaceController {
         
         if snapshot {
             let largerTime = NSMutableAttributedString(string: time)
-            largerTime.addAttribute(NSAttributedStringKey.font, value: UIFont.systemFont(ofSize: 48), range: NSMakeRange(0, time.count))
+            largerTime.addAttribute(NSAttributedString.Key.font, value: UIFont.systemFont(ofSize: 48), range: NSMakeRange(0, time.count))
             self.beerTimer?.setAttributedText(largerTime)
         } else {
             self.beerTimer?.setText(time)

@@ -29,7 +29,7 @@ struct Beer {
     }
     
     func toDictionary() -> [String : Any] {
-        return ["title" : title as AnyObject, "image" : UIImagePNGRepresentation(image!)!]
+        return ["title" : title as AnyObject, "image" : image!.pngData()!]
     }
 }
 
